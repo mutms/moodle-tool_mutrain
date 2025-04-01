@@ -1,27 +1,30 @@
 <?php
-// This file is part of Moodle - https://moodle.org/
+// This file is part of Training plugin for Moodle™.
 //
-// Moodle is free software: you can redistribute it and/or modify
+// This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
+// This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace customfield_training\local;
+// phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
+// phpcs:disable moodle.Files.LineLength.TooLong
+
+namespace tool_mutrain\local;
 
 use moodle_url, stdClass;
 
 /**
  * Training management helper.
  *
- * @package    customfield_training
+ * @package    tool_mutrain
  * @copyright  2024 Open LMS (https://www.openlms.net/)
  * @author     Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -36,18 +39,18 @@ final class management {
         if (isguestuser() || !isloggedin()) {
             return null;
         }
-        if (has_capability('customfield/training:viewframeworks', \context_system::instance())) {
-            return new moodle_url('/customfield/field/training/management/index.php');
+        if (has_capability('tool/mutrain:viewframeworks', \context_system::instance())) {
+            return new moodle_url('/admin/tool/mutrain/management/index.php');
         } else {
             // This is not very fast, but we need to let users somehow access framework
             // management if they can do so in course category only.
-            $categories = \core_course_category::make_categories_list('customfield/training:viewframeworks');
+            $categories = \core_course_category::make_categories_list('tool/mutrain:viewframeworks');
             // NOTE: Add some better logic here looking for categories with frameworks or remember which one was accessed before.
             if ($categories) {
                 foreach ($categories as $cid => $unusedname) {
                     $catcontext = \context_coursecat::instance($cid, IGNORE_MISSING);
                     if ($catcontext) {
-                        return new moodle_url('/customfield/field/training/management/index.php', ['contextid' => $catcontext->id]);
+                        return new moodle_url('/admin/tool/mutrain/management/index.php', ['contextid' => $catcontext->id]);
                     }
                 }
             }
@@ -59,9 +62,11 @@ final class management {
      * Fetch list of frameworks.
      *
      * @param \context|null $context null means all contexts
+     * @param bool $archived
      * @param string $search search string
      * @param int $page
      * @param int $perpage
+     * @param string $orderby
      * @return array ['frameworks' => array, 'totalcount' => int]
      */
     public static function fetch_frameworks(?\context $context, bool $archived, string $search, int $page, int $perpage, string $orderby = 'name ASC'): array {
@@ -72,8 +77,8 @@ final class management {
         $select .= ' AND archived = :archived';
         $params['archived'] = (int)$archived;
 
-        $frameworks = $DB->get_records_select('customfield_training_frameworks', $select, $params, $orderby, '*', $page * $perpage, $perpage);
-        $totalcount = $DB->count_records_select('customfield_training_frameworks', $select, $params);
+        $frameworks = $DB->get_records_select('tool_mutrain_framework', $select, $params, $orderby, '*', $page * $perpage, $perpage);
+        $totalcount = $DB->count_records_select('tool_mutrain_framework', $select, $params);
 
         return ['frameworks' => $frameworks, 'totalcount' => $totalcount];
     }
@@ -91,15 +96,15 @@ final class management {
 
         $result = [];
 
-        if (has_capability('customfield/training:viewframeworks', $syscontext)) {
-            $allcount = $DB->count_records('customfield_training_frameworks', []);
-            $result[0] = get_string('allframeworks', 'customfield_training') . ' (' . $allcount . ')';
+        if (has_capability('tool/mutrain:viewframeworks', $syscontext)) {
+            $allcount = $DB->count_records('tool_mutrain_framework', []);
+            $result[0] = get_string('allframeworks', 'tool_mutrain') . ' (' . $allcount . ')';
 
-            $syscount = $DB->count_records('customfield_training_frameworks', ['contextid' => $syscontext->id]);
+            $syscount = $DB->count_records('tool_mutrain_framework', ['contextid' => $syscontext->id]);
             $result[$syscontext->id] = $syscontext->get_context_name() . ' (' . $syscount .')';
         }
 
-        $categories = \core_course_category::make_categories_list('customfield/training:viewframeworks');
+        $categories = \core_course_category::make_categories_list('tool/mutrain:viewframeworks');
         if (!$categories) {
             return $result;
         }
@@ -107,7 +112,7 @@ final class management {
         $sql = "SELECT cat.id, COUNT(f.id)
                   FROM {course_categories} cat
                   JOIN {context} ctx ON ctx.instanceid = cat.id AND ctx.contextlevel = 40
-                  JOIN {customfield_training_frameworks} f ON f.contextid = ctx.id
+                  JOIN {tool_mutrain_framework} f ON f.contextid = ctx.id
               GROUP BY cat.id
                 HAVING COUNT(f.id) > 0";
         $frameworkcounts = $DB->get_records_sql_menu($sql);
@@ -182,36 +187,38 @@ final class management {
      *
      * @param moodle_url $pageurl
      * @param \context $context
-     * @param int $contextid
      * @return void
      */
-    public static function setup_index_page(\moodle_url $pageurl, \context $context, int $contextid): void {
-        global $PAGE, $CFG;
+    public static function setup_index_page(\moodle_url $pageurl, \context $context): void {
+        global $PAGE;
 
-        $syscontext = \context_system::instance();
-
-        if (has_capability('customfield/training:viewframeworks', $syscontext) && has_capability('moodle/site:config', $syscontext)) {
-            require_once($CFG->libdir . '/adminlib.php');
-            admin_externalpage_setup('customfield_training_frameworks', '', null, $pageurl, ['pagelayout' => 'admin', 'nosearch' => true]);
-            $PAGE->set_heading(get_string('manageframeworks', 'customfield_training'));
-        } else {
-            $PAGE->set_pagelayout('admin');
-            $PAGE->set_context($context);
-            $PAGE->set_url($pageurl);
-            $PAGE->set_title(get_string('frameworks', 'customfield_training'));
-            $PAGE->set_heading(get_string('manageframeworks', 'customfield_training'));
-            if ($contextid) {
-                if (has_capability('customfield/training:viewframeworks', $syscontext)) {
-                    $url = new moodle_url('/customfield/field/training/management/index.php');
-                    $PAGE->navbar->add(get_string('manageframeworks', 'customfield_training'), $url);
-                } else {
-                    $PAGE->navbar->add(get_string('manageframeworks', 'customfield_training'));
-                }
-            } else {
-                $PAGE->navbar->add(get_string('manageframeworks', 'customfield_training'));
-            }
-        }
+        $PAGE->set_pagelayout('admin');
+        $PAGE->set_context($context);
+        $PAGE->set_url($pageurl);
+        $PAGE->set_title(get_string('frameworks', 'tool_mutrain'));
+        $PAGE->set_heading(get_string('frameworks', 'tool_mutrain'));
         $PAGE->set_secondary_navigation(false);
+
+        $contexts = [];
+        while (true) {
+            $contexts[] = $context;
+            $parent = $context->get_parent_context();
+            if (!$parent) {
+                break;
+            }
+            $context = $parent;
+        }
+
+        $contexts = array_reverse($contexts);
+
+        /** @var \context $context */
+        foreach ($contexts as $context) {
+            $url = null;
+            if (has_capability('tool/mutrain:viewframeworks', $context)) {
+                $url = new moodle_url('/admin/tool/mutrain/management/index.php', ['contextid' => $context->id]);
+            }
+            $PAGE->navbar->add($context->get_context_name(false), $url);
+        }
     }
 
     /**
@@ -223,24 +230,35 @@ final class management {
      * @return void
      */
     public static function setup_framework_page(\moodle_url $pageurl, \context $context, stdClass $framework): void {
-        global $PAGE, $CFG;
+        global $PAGE;
 
-        $syscontext = \context_system::instance();
-
-        if (has_capability('customfield/training:viewframeworks', $syscontext) && has_capability('moodle/site:config', $syscontext)) {
-            require_once($CFG->libdir . '/adminlib.php');
-            admin_externalpage_setup('customfield_training_frameworks', '', null, $pageurl, ['pagelayout' => 'admin', 'nosearch' => true]);
-            $PAGE->set_heading(format_string($framework->name));
-        } else {
-            $PAGE->set_pagelayout('admin');
-            $PAGE->set_context($context);
-            $PAGE->set_url($pageurl);
-            $PAGE->set_title(get_string('frameworks', 'customfield_training'));
-            $PAGE->set_heading(format_string($framework->name));
-            $url = new moodle_url('/customfield/field/training/management/index.php', ['contextid' => $context->id]);
-            $PAGE->navbar->add(get_string('manageframeworks', 'customfield_training'), $url);
-        }
+        $PAGE->set_pagelayout('admin');
+        $PAGE->set_context($context);
+        $PAGE->set_url($pageurl);
+        $PAGE->set_title(get_string('frameworks', 'tool_mutrain'));
+        $PAGE->set_heading(format_string($framework->name));
         $PAGE->set_secondary_navigation(false);
+
+        $contexts = [];
+        while (true) {
+            $contexts[] = $context;
+            $parent = $context->get_parent_context();
+            if (!$parent) {
+                break;
+            }
+            $context = $parent;
+        }
+
+        $contexts = array_reverse($contexts);
+
+        /** @var \context $context */
+        foreach ($contexts as $context) {
+            $url = null;
+            if (has_capability('tool/mutrain:viewframeworks', $context)) {
+                $url = new moodle_url('/admin/tool/mutrain/management/index.php', ['contextid' => $context->id]);
+            }
+            $PAGE->navbar->add($context->get_context_name(false), $url);
+        }
         $PAGE->navbar->add(format_string($framework->name));
     }
 }

@@ -1,4 +1,4 @@
-@customfield @customfield_training @javascript @openlms
+@tool @tool_mutrain @javascript @muTMS
 Feature: Managers can manage training custom course fields
 
   Background:
@@ -18,7 +18,7 @@ Feature: Managers can manage training custom course fields
     And I set the following fields to these values:
       | Name       | Test field |
       | Short name | testfield  |
-    And I click on "Save changes" "button" in the "Adding a new Training value" "dialogue"
+    And I click on "Save changes" "button" in the "Adding a new Training value custom field" "dialogue"
     Then I should see "Test field"
     And I log out
 
@@ -31,7 +31,7 @@ Feature: Managers can manage training custom course fields
     And I set the following fields to these values:
       | Name       | Test field |
       | Short name | testfield  |
-    And I click on "Save changes" "button" in the "Adding a new Training value" "dialogue"
+    And I click on "Save changes" "button" in the "Adding a new Training value custom field" "dialogue"
     And I click on "Edit" "link" in the "Test field" "table_row"
     And I set the following fields to these values:
       | Name | Edited field |
@@ -50,7 +50,7 @@ Feature: Managers can manage training custom course fields
     And I set the following fields to these values:
       | Name       | Test field |
       | Short name | testfield  |
-    And I click on "Save changes" "button" in the "Adding a new Training value" "dialogue"
+    And I click on "Save changes" "button" in the "Adding a new Training value custom field" "dialogue"
     And I click on "Delete" "link" in the "Test field" "table_row"
     And I click on "Yes" "button" in the "Confirm" "dialogue"
     And I wait until the page is ready
@@ -60,9 +60,9 @@ Feature: Managers can manage training custom course fields
 
   Scenario: Create custom training field via generator
     When the following "custom fields" exist:
-      | name             | category           | type     | shortname | configdata            |
-      | Training Field 1 | Category for test  | training | training1 |                       |
-      | Training Field 2 | Category for test  | training | training2 |                       |
+      | name             | category           | type    | shortname | configdata            |
+      | Training Field 1 | Category for test  | mutrain | training1 |                       |
+      | Training Field 2 | Category for test  | mutrain | training2 |                       |
     And the following "courses" exist:
       | fullname | shortname | customfield_training1 |
       | Course 2 | C2        | 27                    |
@@ -78,9 +78,9 @@ Feature: Managers can manage training custom course fields
 
   Scenario: Set training value custom field for courses
     Given the following "custom fields" exist:
-      | name               | category           | type     | shortname | configdata            |
-      | Optional training  | Category for test  | training | training1 |                       |
-      | Mandatory training | Category for test  | training | training2 |                       |
+      | name               | category           | type    | shortname | configdata            |
+      | Optional training  | Category for test  | mutrain | training1 |                       |
+      | Mandatory training | Category for test  | mutrain | training2 |                       |
     And the following "users" exist:
       | username | firstname | lastname | email                |
       | teacher1 | Teacher   | 1        | teacher1@example.com |

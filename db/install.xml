@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="customfield/field/training/db" VERSION="20240323" COMMENT="XMLDB file for customfield/field/training"
+<XMLDB PATH="admin/tool/mutrain/db" VERSION="20250416" COMMENT="XMLDB file for training"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="customfield_training_frameworks" COMMENT="Stores the list of training frameworks and their configuration">
+    <TABLE NAME="tool_mutrain_framework" COMMENT="Stores the list of training frameworks and their configuration">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="contextid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="System of category context for framework management access control, will also be used for multi-tenancy"/>
@@ -26,7 +26,7 @@
         <INDEX NAME="idnumber" UNIQUE="true" FIELDS="idnumber" COMMENT="Enforce unique idnumber for all frameworks if defined"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="customfield_training_fields" COMMENT="Custom training fields associated with training framework">
+    <TABLE NAME="tool_mutrain_field" COMMENT="Custom training fields associated with training framework">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="frameworkid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -34,25 +34,27 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="frameworkid" TYPE="foreign" FIELDS="frameworkid" REFTABLE="customfield_training_frameworks" REFFIELDS="id"/>
+        <KEY NAME="frameworkid" TYPE="foreign" FIELDS="frameworkid" REFTABLE="tool_mutrain_framework" REFFIELDS="id"/>
         <KEY NAME="fieldid" TYPE="foreign" FIELDS="fieldid" REFTABLE="customfield_field" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="frameworkid-fieldid" UNIQUE="true" FIELDS="frameworkid, fieldid" COMMENT="Prevent duplicates"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="customfield_training_completions" COMMENT="Cached completions - to speed up aggregation in programs or elsewhere">
+    <TABLE NAME="tool_mutrain_completion" COMMENT="Cached completions for each custom field - to speed up aggregation in programs or elsewhere">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="fieldid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="instanceid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="matches customfield_data.instanceid"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="User who completed something"/>
+        <FIELD NAME="contextid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Relevant context id"/>
         <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Completion time copied from course completion or elsewhere"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="fieldid" TYPE="foreign" FIELDS="fieldid" REFTABLE="customfield_field" REFFIELDS="id"/>
         <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="contextid" TYPE="foreign" FIELDS="contextid" REFTABLE="context" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="fieldid-instanceid-userid" UNIQUE="true" FIELDS="fieldid, instanceid, userid"/>

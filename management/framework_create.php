@@ -1,40 +1,42 @@
 <?php
-// This file is part of Moodle - https://moodle.org/
+// This file is part of Training plugin for Moodle™.
 //
-// Moodle is free software: you can redistribute it and/or modify
+// This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
+// This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+// phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
 /**
  * Add a new training framework.
  *
- * @package    customfield_training
+ * @package    tool_mutrain
  * @copyright  2024 Open LMS (https://www.openlms.net/)
  * @author     Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use customfield_training\local\framework;
-use customfield_training\local\management;
+use tool_mutrain\local\framework;
+use tool_mutrain\local\management;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
 /** @var stdClass $CFG */
 
-if (!empty($_SERVER['HTTP_X_LEGACY_DIALOG_FORM_REQUEST'])) {
+// phpcs:ignoreFile moodle.Files.MoodleInternal.MoodleInternalGlobalState
+if (!empty($_SERVER['HTTP_X_MULIB_DIALOG_FORM_REQUEST'])) {
     define('AJAX_SCRIPT', true);
 }
-
 require('../../../../config.php');
 require_once("$CFG->libdir/filelib.php");
 
@@ -42,12 +44,12 @@ $contextid = required_param('contextid', PARAM_INT);
 $context = context::instance_by_id($contextid);
 
 require_login();
-require_capability('customfield/training:manageframeworks', $context);
+require_capability('tool/mutrain:manageframeworks', $context);
 
-$pageurl = new moodle_url('/customfield/field/training/management/framework_create.php', ['contextid' => $context->id]);
+$pageurl = new moodle_url('/admin/tool/mutrain/management/framework_create.php', ['contextid' => $context->id]);
 management::setup_index_page($pageurl, $context, $context->id);
 
-$returnurl = new moodle_url('/customfield/field/training/management/index.php', ['contextid' => $context->id]);
+$returnurl = new moodle_url('/admin/tool/mutrain/management/index.php', ['contextid' => $context->id]);
 
 $framework = new \stdClass();
 $framework->contextid = $context->id;
@@ -60,7 +62,7 @@ $framework->public = 0;
 
 $editoroptions = framework::get_description_editor_options();
 
-$form = new \customfield_training\local\form\framework_create(null, ['data' => $framework, 'editoroptions' => $editoroptions]);
+$form = new \tool_mutrain\local\form\framework_create(null, ['data' => $framework, 'editoroptions' => $editoroptions]);
 if ($form->is_cancelled()) {
     redirect($returnurl);
 } else if ($data = $form->get_data()) {
@@ -69,6 +71,6 @@ if ($form->is_cancelled()) {
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('framework_create', 'customfield_training'));
+echo $OUTPUT->heading(get_string('framework_create', 'tool_mutrain'));
 echo $form->render();
 echo $OUTPUT->footer();

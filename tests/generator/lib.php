@@ -1,30 +1,32 @@
 <?php
-// This file is part of Moodle - https://moodle.org/
+// This file is part of Training plugin for Moodle™.
 //
-// Moodle is free software: you can redistribute it and/or modify
+// This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
+// This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-use customfield_training\local\framework;
+// phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
+
+use tool_mutrain\local\framework;
 
 /**
  * Training generator.
  *
- * @package    customfield_training
+ * @package    tool_mutrain
  * @copyright  2024 Open LMS (https://www.openlms.net/)
  * @author     Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class customfield_training_generator extends component_generator_base {
+class tool_mutrain_generator extends component_generator_base {
     /**
      * @var int keeps track of how many frameworks have been created.
      */
@@ -43,7 +45,7 @@ class customfield_training_generator extends component_generator_base {
     /**
      * Create a new framework.
      *
-     * @param $record
+     * @param mixed $record
      * @return stdClass framework record
      */
     public function create_framework($record = null): stdClass {

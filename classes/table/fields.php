@@ -1,42 +1,54 @@
 <?php
-// This file is part of Moodle - https://moodle.org/
+// This file is part of Training plugin for Moodle™.
 //
-// Moodle is free software: you can redistribute it and/or modify
+// This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
+// This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace customfield_training\table;
+// phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
+// phpcs:disable moodle.Files.LineLength.TooLong
+
+namespace tool_mutrain\table;
 
 use stdClass;
 use moodle_url;
-use customfield_training\local\framework;
+use tool_mutrain\local\framework;
+
+defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/tablelib.php');
 
 /**
  * All training frameworks.
  *
- * @package    customfield_training
+ * @package    tool_mutrain
  * @copyright  2024 Open LMS (https://www.openlms.net/)
  * @author     Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 final class fields extends \table_sql {
-
+    /** @var int */
     const DEFAULT_PERPAGE = 99;
+    /** @var stdClass */
     protected $framework;
 
+    /**
+     * Constructor.
+     *
+     * @param moodle_url $url
+     * @param stdClass $framework
+     */
     public function __construct(moodle_url $url, stdClass $framework) {
-        parent::__construct('customfield_training_fields');
+        parent::__construct('tool_mutrain_field');
 
         $this->framework = $framework;
         $page = optional_param('page', 0, PARAM_INT);
@@ -64,14 +76,14 @@ final class fields extends \table_sql {
         $headers = [
             get_string('name'),
             get_string('shortname'),
-            get_string('component', 'customfield_training'),
-            get_string('area', 'customfield_training'),
+            get_string('component', 'tool_mutrain'),
+            get_string('area', 'tool_mutrain'),
             get_string('actions'),
         ];
 
         $this->define_columns($columns);
         $this->define_headers($headers);
-        $this->set_attribute('id', 'customfield_training_fields_table');
+        $this->set_attribute('id', 'tool_mutrain_field_table');
 
         foreach ($columns as $column) {
             if ($column !== 'name') {
@@ -85,8 +97,8 @@ final class fields extends \table_sql {
         $sql = "SELECT cf.id, cf.name, cf.shortname, cc.component, cc.area
                   FROM {customfield_field} cf
                   JOIN {customfield_category} cc ON cc.id = cf.categoryid AND (cc.component = 'core_course' AND cc.area = 'course')
-                  JOIN {customfield_training_fields} tf ON tf.fieldid = cf.id
-                 WHERE cf.type = 'training' AND tf.frameworkid = $frameworkid";
+                  JOIN {tool_mutrain_field} tf ON tf.fieldid = cf.id
+                 WHERE cf.type = 'mutrain' AND tf.frameworkid = $frameworkid";
         $this->set_sql("*", "($sql) AS fields", "1=1", []);
     }
 
@@ -139,23 +151,25 @@ final class fields extends \table_sql {
      * @return string
      */
     public function col_actions(stdClass $field) {
-        global $PAGE;
-
-        /** @var \local_openlms\output\dialog_form\renderer $dialogformoutput */
-        $dialogformoutput = $PAGE->get_renderer('local_openlms', 'dialog_form');
+        global $OUTPUT;
 
         $html = '';
 
-        if (!$this->framework->archived && has_capability('customfield/training:manageframeworks', \context_system::instance())) {
-            $url = new \moodle_url('/customfield/field/training/management/field_remove.php',
+        if (!$this->framework->archived && has_capability('tool/mutrain:manageframeworks', \context_system::instance())) {
+            $url = new \moodle_url('/admin/tool/mutrain/management/field_remove.php',
                 ['frameworkid' => $this->framework->id, 'fieldid' => $field->id]);
-            $button = new \local_openlms\output\dialog_form\icon($url, 'i/delete', get_string('field_remove', 'customfield_training'), 'moodle');
-            $html .= $dialogformoutput->render($button);
+            $button = new \tool_mulib\output\dialog_form\icon($url, get_string('field_remove', 'tool_mutrain'), 'i/delete', 'moodle');
+            $html .= $OUTPUT->render($button);
         }
 
         return $html;
     }
 
+    /**
+     * Nothing info.
+     *
+     * @return void
+     */
     public function print_nothing_to_display() {
         // Get rid of ugly H2 heading.
         echo '<em>' . get_string('nothingtodisplay') . '</em>';
