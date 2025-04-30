@@ -1,4 +1,4 @@
-@tool @tool_mutrain @javascript @muTMS
+@tool @tool_mutrain @javascript @MuTMS
 Feature: Managers can manage training frameworks
 
   Background:

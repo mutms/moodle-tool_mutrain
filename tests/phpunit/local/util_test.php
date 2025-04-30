@@ -25,7 +25,7 @@ use tool_mutrain\local\util;
 /**
  * Program helper test.
  *
- * @group      muTMS
+ * @group      MuTMS
  * @package    tool_mutrain
  * @copyright  2025 Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

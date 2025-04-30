@@ -21,7 +21,7 @@ namespace tool_mutrain\phpunit;
 /**
  * Framework generator test.
  *
- * @group      muTMS
+ * @group      MuTMS
  * @package    tool_mutrain
  * @copyright  2022 Open LMS (https://www.openlms.net/)
  * @copyright  2025 Petr Skoda

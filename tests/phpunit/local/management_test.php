@@ -24,7 +24,7 @@ use tool_mutrain\local\management;
 /**
  * Training management helper test.
  *
- * @group      muTMS
+ * @group      MuTMS
  * @package    tool_mutrain
  * @copyright  2024 Open LMS (https://www.openlms.net/)
  * @copyright  2025 Petr Skoda
