@@ -27,7 +27,6 @@
  */
 
 use tool_mutrain\local\management;
-use tool_mulib\output\dropdown;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */

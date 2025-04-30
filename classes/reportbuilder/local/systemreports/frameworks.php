@@ -27,7 +27,7 @@ use core_reportbuilder\local\filters\boolean_select;
 use lang_string;
 
 /**
- * Embedded frameworks report.
+ * Embedded training frameworks report.
  *
  * @package     tool_mutrain
  * @copyright   2025 Petr Skoda

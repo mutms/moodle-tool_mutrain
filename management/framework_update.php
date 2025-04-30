@@ -39,7 +39,6 @@ if (!empty($_SERVER['HTTP_X_MULIB_DIALOG_FORM_REQUEST'])) {
     define('AJAX_SCRIPT', true);
 }
 require('../../../../config.php');
-require_once("$CFG->libdir/filelib.php");
 
 $id = required_param('id', PARAM_INT);
 

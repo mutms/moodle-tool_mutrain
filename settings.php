@@ -32,10 +32,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $ADMIN->add('root', new admin_category('tool_mutrain', new lang_string('training', 'tool_mutrain')));
 
-$ADMIN->add('tool_mutrain', new admin_externalpage('tool_mutrain_framework',
+$ADMIN->add('tool_mutrain', new admin_externalpage('tool_mutrain_frameworks',
     get_string('management_frameworks', 'tool_mutrain'),
     new moodle_url('/admin/tool/mutrain/management/index.php'),
     'tool/mutrain:viewframeworks'));
-
-// Do not use standard settings page.
-$settings = null;

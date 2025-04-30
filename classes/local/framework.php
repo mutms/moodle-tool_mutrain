@@ -361,6 +361,8 @@ final class framework {
      * @return array
      */
     public static function get_description_editor_options(): array {
+        global $CFG;
+        require_once("$CFG->libdir/filelib.php");
         $context = \context_system::instance();
         return ['maxfiles' => 0, 'context' => $context];
     }

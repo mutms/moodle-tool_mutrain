@@ -39,7 +39,6 @@ if (!empty($_SERVER['HTTP_X_MULIB_DIALOG_FORM_REQUEST'])) {
     define('AJAX_SCRIPT', true);
 }
 require('../../../../config.php');
-require_once("$CFG->libdir/filelib.php");
 
 $contextid = required_param('contextid', PARAM_INT);
 $context = context::instance_by_id($contextid);

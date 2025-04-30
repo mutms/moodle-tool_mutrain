@@ -19,7 +19,7 @@
 
 namespace tool_mutrain\output\management;
 
-use stdClass, moodle_url, html_writer;
+use stdClass, moodle_url;
 
 /**
  * Frameworks management renderer.
@@ -37,6 +37,12 @@ class renderer extends \plugin_renderer_base {
      */
     public function render_framework(stdClass $framework): string {
         $context = \context::instance_by_id($framework->contextid);
+
+        $description = '';
+        if ($framework->description) {
+            $description = format_text($framework->description, $framework->descriptionformat, ['context' => $context]);
+            $description = $this->output->box($description);
+        }
 
         $details = [];
 
@@ -70,6 +76,6 @@ class renderer extends \plugin_renderer_base {
         }
         $details[] = ['property' => get_string('archived', 'tool_mutrain'), 'value' => $archived];
 
-        return $this->output->render_from_template('tool_mulib/entity_details', ['details' => $details]);
+        return $description . $this->output->render_from_template('tool_mulib/entity_details', ['details' => $details]);
     }
 }

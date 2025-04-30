@@ -27,7 +27,7 @@ use core_reportbuilder\local\helpers\format;
 use core_reportbuilder\local\filters\boolean_select;
 
 /**
- * Framework entity.
+ * Training framework entity.
  *
  * @package    tool_mutrain
  * @copyright  2025 Petr Skoda

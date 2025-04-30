@@ -36,7 +36,6 @@ use tool_mutrain\local\management;
 /** @var stdClass $USER */
 
 require_once('../../../../config.php');
-require_once("$CFG->libdir/adminlib.php");
 
 $id = required_param('id', PARAM_INT);
 
@@ -70,11 +69,6 @@ if ($actions->has_items()) {
 }
 
 echo $OUTPUT->header();
-
-if ($framework->description) {
-    $description = format_text($framework->description, $framework->descriptionformat, ['context' => $context]);
-    echo $OUTPUT->box($description);
-}
 
 echo $managementoutput->render_framework($framework);
 
