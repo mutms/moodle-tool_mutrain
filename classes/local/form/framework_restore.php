@@ -36,7 +36,7 @@ final class framework_restore extends \tool_mulib\local\dialog_form {
         $mform->setDefault('id', $data->id);
 
         $mform->addElement('static', 'name', get_string('framework_name', 'tool_mutrain'), format_string($data->name));
-        $mform->addElement('static', 'idnumber', get_string('framework_idnumber', 'tool_mutrain'), format_string($data->idnumber));
+        $mform->addElement('static', 'idnumber', get_string('framework_idnumber', 'tool_mutrain'), s($data->idnumber));
 
         $this->add_action_buttons(true, get_string('framework_restore', 'tool_mutrain'));
     }
