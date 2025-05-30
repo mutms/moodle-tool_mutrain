@@ -18,8 +18,6 @@
 
 namespace tool_mutrain\privacy;
 
-use core_customfield\data_controller;
-use core_privacy\local\request\writer;
 use core_privacy\local\metadata\collection;
 
 /**
