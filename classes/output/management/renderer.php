@@ -71,7 +71,7 @@ class renderer extends \plugin_renderer_base {
                 $url = new moodle_url('/admin/tool/mutrain/management/framework_archive.php', ['id' => $framework->id]);
                 $action = new \tool_mulib\output\dialog_form\icon($url, get_string('framework_archive', 'tool_mutrain'), 'i/settings');
             }
-            $action->set_dialog_size('');
+            $action->set_dialog_size('sm');
             $archived .= $this->output->render($action);
         }
         $details[] = ['property' => get_string('archived', 'tool_mutrain'), 'value' => $archived];
