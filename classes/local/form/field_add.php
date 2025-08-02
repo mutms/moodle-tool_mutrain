@@ -41,7 +41,11 @@ final class field_add extends \tool_mulib\local\dialog_form {
 
         $arguments = ['frameworkid' => $framework->id];
         form_field_add_fieldid::add_form_element(
-            $mform, $arguments, 'fieldid', get_string('field', 'tool_mutrain'));
+            $mform,
+            $arguments,
+            'fieldid',
+            get_string('field', 'tool_mutrain')
+        );
         $mform->addRule('fieldid', null, 'required', null, 'client');
 
         $this->add_action_buttons(true, get_string('field_add', 'tool_mutrain'));
