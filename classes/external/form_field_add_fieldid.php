@@ -64,8 +64,10 @@ final class form_field_add_fieldid extends \tool_mulib\external\form_autocomplet
     public static function execute(string $query, int $frameworkid): array {
         global $DB;
 
-        $params = self::validate_parameters(self::execute_parameters(),
-            ['query' => $query, 'frameworkid' => $frameworkid]);
+        $params = self::validate_parameters(
+            self::execute_parameters(),
+            ['query' => $query, 'frameworkid' => $frameworkid]
+        );
         $query = $params['query'];
         $frameworkid = $params['frameworkid'];
 
@@ -117,7 +119,7 @@ final class form_field_add_fieldid extends \tool_mulib\external\form_autocomplet
      * @return callable
      */
     public static function get_label_callback(array $arguments): callable {
-        return function($value) use ($arguments): string {
+        return function ($value) use ($arguments): string {
             $allfields = framework::get_all_training_fields();
             $name = $allfields[$value]->name ?? \get_string('error');
             return \format_string($name);
@@ -144,9 +146,12 @@ final class form_field_add_fieldid extends \tool_mulib\external\form_autocomplet
             return \get_string('error');
         }
 
-        if ($DB->record_exists('tool_mutrain_field',
-            ['frameworkid' => $arguments['frameworkid'], 'fieldid' => $value])) {
-
+        if (
+            $DB->record_exists(
+                'tool_mutrain_field',
+                ['frameworkid' => $arguments['frameworkid'], 'fieldid' => $value]
+            )
+        ) {
             return \get_string('error');
         }
 
