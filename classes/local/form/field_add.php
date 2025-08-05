@@ -29,7 +29,7 @@ use tool_mutrain\external\form_field_add_fieldid;
  * @author     Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class field_add extends \tool_mulib\local\dialog_form {
+final class field_add extends \tool_mulib\local\ajax_form {
     #[\Override]
     protected function definition() {
         $mform = $this->_form;
