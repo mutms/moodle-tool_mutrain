@@ -58,7 +58,7 @@ if ($framework->archived) {
 
 $data = clone($framework);
 
-$form = new \tool_mutrain\local\form\field_add(null, ['framework' => $framework]);
+$form = new \tool_mutrain\local\form\field_add(null, ['framework' => $framework, 'context' => $context]);
 
 if ($form->is_cancelled()) {
     $form->ajax_form_cancelled($returnurl);
