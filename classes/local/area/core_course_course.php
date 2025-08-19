@@ -90,7 +90,7 @@ final class core_course_course extends base {
         $DB->execute($sql);
 
         // Sync completion dates.
-        $sql = "UPDATE {tool_mutrain_completion} ctc
+        $sql = "UPDATE {tool_mutrain_completion}
                    SET timecompleted = (
 
                         SELECT cc.timecompleted
@@ -98,7 +98,7 @@ final class core_course_course extends base {
                           JOIN {customfield_data} cd ON cd.instanceid = cc.course
                           JOIN {customfield_field} cf ON cf.id = cd.fieldid AND cf.type = 'mutrain'
                           JOIN {customfield_category} cat ON cat.id = cf.categoryid AND cat.component = 'core_course' AND cat.area = 'course'
-                         WHERE ctc.fieldid = cf.id AND ctc.instanceid = cd.instanceid AND ctc.userid = cc.userid
+                         WHERE {tool_mutrain_completion}.fieldid = cf.id AND {tool_mutrain_completion}.instanceid = cd.instanceid AND {tool_mutrain_completion}.userid = cc.userid
 
                    )
                  WHERE EXISTS (
@@ -108,8 +108,8 @@ final class core_course_course extends base {
                           JOIN {customfield_data} cd ON cd.instanceid = cc.course
                           JOIN {customfield_field} cf ON cf.id = cd.fieldid AND cf.type = 'mutrain'
                           JOIN {customfield_category} cat ON cat.id = cf.categoryid AND cat.component = 'core_course' AND cat.area = 'course'
-                         WHERE ctc.fieldid = cf.id AND ctc.instanceid = cd.instanceid AND ctc.userid = cc.userid
-                               AND ctc.timecompleted <> cc.timecompleted AND cc.timecompleted IS NOT NULL
+                         WHERE {tool_mutrain_completion}.fieldid = cf.id AND {tool_mutrain_completion}.instanceid = cd.instanceid AND {tool_mutrain_completion}.userid = cc.userid
+                               AND {tool_mutrain_completion}.timecompleted <> cc.timecompleted AND cc.timecompleted IS NOT NULL
 
                  )
         ";

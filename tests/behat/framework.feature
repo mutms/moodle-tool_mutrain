@@ -169,9 +169,9 @@ Feature: Managers can manage training frameworks
       | name           | fields               |
       | Framework 001  | training1, training2 |
     And the following "tool_mutrain > frameworks" exist:
-      | name           | idnumber | public | requiredtraining | restrictedcompletion |
-      | Framework 002  | fwid002  | 1      | 77               | 0                    |
-      | Framework 003  |          | 0      | 99               | 1                    |
+      | name           | idnumber | publicaccess | requiredtraining | restrictedcompletion |
+      | Framework 002  | fwid002  | 1            | 77               | 0                    |
+      | Framework 003  |          | 0            | 99               | 1                    |
     And the following "tool_mutrain > frameworks" exist:
       | name           | category | fields    |
       | Framework 004  | Cat 2    | training3 |
