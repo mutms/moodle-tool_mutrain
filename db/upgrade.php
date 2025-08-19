@@ -17,25 +17,35 @@
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
 /**
- * Training plugin.
+ * Training fields upgrade.
  *
  * @package    tool_mutrain
  * @copyright  2025 Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+/**
+ * Upgrade certifications.
+ *
+ * @param mixed $oldversion
+ * @return true
+ */
+function xmldb_tool_mutrain_upgrade($oldversion) {
+    global $DB;
 
-/** @var stdClass $plugin */
-$plugin->component = 'tool_mutrain';
-$plugin->version = 2025080945.01;
-$plugin->requires = 2024100700;
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->supported = [405, 405];
-$plugin->incompatible = 500;
-$plugin->release = 'mu-4.5.6-01+';
+    $dbman = $DB->get_manager();
 
-$plugin->dependencies = [
-    'tool_mulib' => 2025080945,
-    'customfield_mutrain' => 2025080945,
-];
+    if ($oldversion < 2025080945.01) {
+        // Rename field public on table tool_mutrain_framework to publicaccess.
+        $table = new xmldb_table('tool_mutrain_framework');
+        $field = new xmldb_field('public', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'descriptionformat');
+
+        // Launch rename field public.
+        $dbman->rename_field($table, $field, 'publicaccess');
+
+        // Mutrain savepoint reached.
+        upgrade_plugin_savepoint(true, 2025080945.01, 'tool', 'mutrain');
+    }
+
+    return true;
+}
