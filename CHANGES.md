@@ -4,6 +4,9 @@
 
 Release date: xx/08/2025
 
+* Improved naming to use "Training points".
+* Added support custom training fields in programs - programs may now depend indirectly on completion of other programs.
+* Courses with disabled completion tracking are now ignored.
 * Fixed compatibility with unsupported MS SQL databases.
 
 ## mu-4.5.6-01
