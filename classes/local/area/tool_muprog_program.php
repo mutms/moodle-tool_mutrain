@@ -123,7 +123,7 @@ final class tool_muprog_program extends base {
         // Fix contextid when program moved.
         $sql = "UPDATE {tool_mutrain_completion}
                    SET contextid = (
-                        
+
                         SELECT p.contextid
                           FROM {tool_muprog_program} p
                           JOIN {customfield_data} cd ON cd.instanceid = p.id
@@ -132,7 +132,7 @@ final class tool_muprog_program extends base {
                          WHERE {tool_mutrain_completion}.fieldid = cf.id AND {tool_mutrain_completion}.instanceid = cd.instanceid
                    )
                  WHERE EXISTS (
-                        
+
                         SELECT p.id
                           FROM {tool_muprog_program} p
                           JOIN {customfield_data} cd ON cd.instanceid = p.id
