@@ -2,7 +2,7 @@
 
 ## mu-4.5.6-02
 
-Release date: xx/08/2025
+Release date: 31/08/2025
 
 * Improved naming to use "Training points".
 * Added support custom training fields in programs - programs may now depend indirectly on completion of other programs.
