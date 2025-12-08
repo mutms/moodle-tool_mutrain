@@ -79,10 +79,11 @@ final class framework {
             throw new \invalid_parameter_exception('framework public must be 1 or 0');
         }
 
-        $record->requiredtraining = (int)$data->requiredtraining;
-        if ($record->requiredtraining <= 0) {
-            throw new \invalid_parameter_exception('framework requiredtraining must be positive integer');
+        $data->requiredcredits = str_replace(',', '.', $data->requiredcredits);
+        if (!is_numeric($data->requiredcredits) || $data->requiredcredits <= 0) {
+            throw new \invalid_parameter_exception('framework requiredcredits must be positive number');
         }
+        $record->requiredcredits = format_float($data->requiredcredits, 2, false);
 
         $record->archived = (int)($data->archived ?? 0); // New frameworks should not be archived unless testing.
         if ($record->archived !== 0 && $record->archived !== 1) {
@@ -97,6 +98,8 @@ final class framework {
         $framework = $DB->get_record('tool_mutrain_framework', ['id' => $id]);
 
         $trans->allow_commit();
+
+        util::fix_active_flag();
 
         return $framework;
     }
@@ -173,11 +176,12 @@ final class framework {
                 throw new \invalid_parameter_exception('framework public must be 1 or 0');
             }
         }
-        if (property_exists($data, 'requiredtraining')) {
-            $record->requiredtraining = (int)$data->requiredtraining;
-            if ($record->requiredtraining <= 0) {
-                throw new \invalid_parameter_exception('framework requiredtraining must be positive integer');
+        if (property_exists($data, 'requiredcredits')) {
+            $data->requiredcredits = str_replace(',', '.', $data->requiredcredits);
+            if (!is_numeric($data->requiredcredits) || $data->requiredcredits <= 0) {
+                throw new \invalid_parameter_exception('framework requiredcredits must be positive number');
             }
+            $record->requiredcredits = format_float($data->requiredcredits, 2, false);
         }
         // Do not change archived flag here!
         if (isset($data->archived) && $data->archived != $oldrecord->archived) {
@@ -190,6 +194,8 @@ final class framework {
         $framework = $DB->get_record('tool_mutrain_framework', ['id' => $record->id], '*', MUST_EXIST);
 
         $trans->allow_commit();
+
+        util::fix_active_flag();
 
         // NOTE: programs will be updated later via cron.
 
@@ -361,6 +367,8 @@ final class framework {
         $DB->delete_records('tool_mutrain_framework', ['id' => $record->id]);
 
         $trans->allow_commit();
+
+        util::fix_active_flag();
     }
 
     /**

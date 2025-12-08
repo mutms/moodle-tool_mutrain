@@ -46,7 +46,7 @@ final class framework_update extends \tool_mulib\local\ajax_form {
         $mform->setType('idnumber', PARAM_RAW); // Idnumbers are plain text.
 
         $options = $this->get_category_options($data->contextid);
-        $mform->addElement('autocomplete', 'contextid', get_string('context', 'role'), $options);
+        $mform->addElement('autocomplete', 'contextid', get_string('category'), $options);
         $mform->addRule('contextid', null, 'required', null, 'client');
 
         $mform->addElement('advcheckbox', 'publicaccess', get_string('publicaccess', 'tool_mutrain'), ' ');
@@ -54,9 +54,10 @@ final class framework_update extends \tool_mulib\local\ajax_form {
         $mform->addElement('editor', 'description_editor', get_string('description'), ['rows' => 3], $editoroptions);
         $mform->setType('description_editor', PARAM_RAW);
 
-        $mform->addElement('text', 'requiredtraining', get_string('requiredtraining', 'tool_mutrain'));
-        $mform->setType('requiredtraining', PARAM_INT);
-        $mform->addRule('requiredtraining', get_string('required'), 'required', null, 'client');
+        $mform->addElement('text', 'requiredcredits', get_string('requiredcredits', 'tool_mutrain'));
+        $mform->setType('requiredcredits', PARAM_RAW);
+        $mform->addRule('requiredcredits', get_string('required'), 'required', null, 'client');
+        $data->requiredcredits = format_float($data->requiredcredits, 2, true, true);
 
         $mform->addElement('advcheckbox', 'restrictedcompletion', get_string('restrictedcompletion', 'tool_mutrain'), ' ');
 
@@ -81,8 +82,9 @@ final class framework_update extends \tool_mulib\local\ajax_form {
             }
         }
 
-        if ($data['requiredtraining'] <= 0) {
-            $errors['requiredtraining'] = get_string('error');
+        $requiredcredits = str_replace(',', '.', $data['requiredcredits']);
+        if (!is_numeric($requiredcredits) || $requiredcredits <= 0) {
+            $errors['requiredcredits'] = get_string('error');
         }
 
         $context = \context::instance_by_id($data['contextid'], IGNORE_MISSING);

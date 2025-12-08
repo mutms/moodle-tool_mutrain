@@ -17,7 +17,7 @@
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
 /**
- * Training plugin language pack.
+ * Training credits plugin language pack.
  *
  * @package    tool_mutrain
  * @copyright  2024 Open LMS (https://www.openlms.net/)
@@ -31,14 +31,14 @@ $string['archived'] = 'Archived';
 $string['area'] = 'Area';
 $string['component'] = 'Component';
 $string['currentcontextonly'] = 'Exclude sub-categories';
-$string['error_incompatiblearea'] = 'Training field aggregation is not supported in this area.';
-$string['error_noframeworks'] = 'No training frameworks found';
-$string['error_notrainingfields'] = 'No training fields available';
+$string['error_incompatiblearea'] = 'Training credits aggregation is not supported in this area.';
+$string['error_noframeworks'] = 'No credit frameworks found';
+$string['error_notrainingfields'] = 'No training credits custom fields available';
 $string['field'] = 'Custom field';
 $string['field_add'] = 'Add field';
 $string['field_remove'] = 'Remove field';
 $string['fields'] = 'Custom fields';
-$string['framework'] = 'Training framework';
+$string['framework'] = 'Credit framework';
 $string['framework_archive'] = 'Archive framework';
 $string['framework_create'] = 'Add framework';
 $string['framework_delete'] = 'Delete framework';
@@ -46,22 +46,22 @@ $string['framework_idnumber'] = 'Framework ID';
 $string['framework_name'] = 'Framework name';
 $string['framework_restore'] = 'Restore framework';
 $string['framework_update'] = 'Update framework';
-$string['frameworks'] = 'Training frameworks';
+$string['frameworks'] = 'Credit frameworks';
 $string['management_framework_actions'] = 'Framework actions';
-$string['management_frameworks'] = 'Training frameworks';
-$string['mutrain:manageframeworks'] = 'Manage training frameworks';
-$string['mutrain:viewframeworks'] = 'View training frameworks';
+$string['management_frameworks'] = 'Credit frameworks';
+$string['mutrain:manageframeworks'] = 'Manage credit frameworks';
+$string['mutrain:viewframeworks'] = 'View credit frameworks';
 $string['notset'] = 'Not set';
-$string['pluginname'] = 'Training points';
-$string['privacy:metadata'] = 'Training frameworks plugin does not store any personal data except completion caches.';
+$string['pluginname'] = 'Training credits';
+$string['privacy:metadata'] = 'Training credits plugin does not store any personal data except completion caches.';
 $string['privacy:metadata:fieldid'] = 'Field id';
 $string['privacy:metadata:instanceid'] = 'Instance id';
 $string['privacy:metadata:timecompleted'] = 'Time completed';
 $string['privacy:metadata:tool_mutrain_completion:tableexplanation'] = 'Completion cache';
 $string['privacy:metadata:userid'] = 'User ID';
 $string['publicaccess'] = 'Public';
-$string['requiredtraining'] = 'Required training total';
+$string['requiredcredits'] = 'Required credits';
 $string['restrictedcompletion'] = 'Restricted completion validity';
 $string['selectcategory'] = 'Select category';
-$string['specificsettings'] = 'Training value field settings';
-$string['taskcron'] = 'Training completion caching';
+$string['specificsettings'] = 'Training credits custom field settings';
+$string['taskcron'] = 'Completed credits caching';

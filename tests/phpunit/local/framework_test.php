@@ -22,7 +22,7 @@ namespace tool_mutrain\phpunit\local;
 use tool_mutrain\local\framework;
 
 /**
- * Training framework helper test.
+ * Credit framework helper test.
  *
  * @group      MuTMS
  * @package    tool_mutrain
@@ -45,7 +45,7 @@ final class framework_test extends \advanced_testcase {
         $data = [
             'name' => 'Some framework',
             'contextid' => (string)$syscontext->id,
-            'requiredtraining' => '101',
+            'requiredcredits' => '101',
         ];
         $this->setCurrentTimeStart();
         $framework = framework::create($data);
@@ -57,7 +57,7 @@ final class framework_test extends \advanced_testcase {
         $this->assertSame('', $framework->description);
         $this->assertSame('1', $framework->descriptionformat);
         $this->assertSame('0', $framework->publicaccess);
-        $this->assertSame($data['requiredtraining'], $framework->requiredtraining);
+        $this->assertSame((float)$data['requiredcredits'], (float)$framework->requiredcredits);
         $this->assertSame('0', $framework->restrictedcompletion);
         $this->assertSame('0', $framework->archived);
         $this->assertTimeCurrent($framework->timecreated);
@@ -68,7 +68,7 @@ final class framework_test extends \advanced_testcase {
             'contextid' => (string)$categorycontext->id,
             'name' => 'Some framework 2',
             'idnumber' => 'f2',
-            'requiredtraining' => '10',
+            'requiredcredits' => '10',
             'description' => 'pokus',
             'publicaccess' => '1',
             'restrictedcompletion' => '1',
@@ -83,7 +83,7 @@ final class framework_test extends \advanced_testcase {
         $this->assertSame($data['description'], $framework->description);
         $this->assertSame('1', $framework->descriptionformat);
         $this->assertSame($data['publicaccess'], $framework->publicaccess);
-        $this->assertSame($data['requiredtraining'], $framework->requiredtraining);
+        $this->assertSame((float)$data['requiredcredits'], (float)$framework->requiredcredits);
         $this->assertSame($data['restrictedcompletion'], $framework->restrictedcompletion);
         $this->assertSame($data['archived'], $framework->archived);
         $this->assertTimeCurrent($framework->timecreated);
@@ -93,7 +93,7 @@ final class framework_test extends \advanced_testcase {
                 'name' => 'Some framework 3',
                 'idnumber' => 'f2',
                 'contextid' => (string)$syscontext->id,
-                'requiredtraining' => '101',
+                'requiredcredits' => '101',
             ];
             framework::create($data);
             $this->fail('Exception expected');
@@ -106,26 +106,26 @@ final class framework_test extends \advanced_testcase {
             $data = [
                 'name' => 'Some framework 4',
                 'contextid' => (string)$syscontext->id,
-                'requiredtraining' => 0,
+                'requiredcredits' => 0,
             ];
             framework::create($data);
             $this->fail('Exception expected');
         } catch (\moodle_exception $e) {
             $this->assertInstanceOf(\invalid_parameter_exception::class, $e);
-            $this->assertSame('Invalid parameter value detected (framework requiredtraining must be positive integer)', $e->getMessage());
+            $this->assertSame('Invalid parameter value detected (framework requiredcredits must be positive number)', $e->getMessage());
         }
 
         try {
             $data = [
                 'name' => 'Some framework 4',
                 'contextid' => (string)$syscontext->id,
-                'requiredtraining' => -2,
+                'requiredcredits' => -2,
             ];
             framework::create($data);
             $this->fail('Exception expected');
         } catch (\moodle_exception $e) {
             $this->assertInstanceOf(\invalid_parameter_exception::class, $e);
-            $this->assertSame('Invalid parameter value detected (framework requiredtraining must be positive integer)', $e->getMessage());
+            $this->assertSame('Invalid parameter value detected (framework requiredcredits must be positive number)', $e->getMessage());
         }
     }
 
@@ -134,7 +134,7 @@ final class framework_test extends \advanced_testcase {
         $data = [
             'name' => 'Some framework',
             'contextid' => (string)$syscontext->id,
-            'requiredtraining' => '101',
+            'requiredcredits' => '101',
         ];
         $framework = framework::create($data);
 
@@ -145,7 +145,7 @@ final class framework_test extends \advanced_testcase {
             'contextid' => (string)$categorycontext->id,
             'name' => 'Some framework 2',
             'idnumber' => 'f2',
-            'requiredtraining' => '10',
+            'requiredcredits' => '10',
             'description' => 'pokus',
             'publicaccess' => '1',
             'restrictedcompletion' => '1',
@@ -158,7 +158,7 @@ final class framework_test extends \advanced_testcase {
         $this->assertSame($data['description'], $framework->description);
         $this->assertSame('1', $framework->descriptionformat);
         $this->assertSame($data['publicaccess'], $framework->publicaccess);
-        $this->assertSame($data['requiredtraining'], $framework->requiredtraining);
+        $this->assertSame((float)$data['requiredcredits'], (float)$framework->requiredcredits);
         $this->assertSame($data['restrictedcompletion'], $framework->restrictedcompletion);
         $this->assertSame('0', $framework->archived);
 
@@ -167,7 +167,7 @@ final class framework_test extends \advanced_testcase {
             'contextid' => (string)$categorycontext->id,
             'name' => 'Some framework 2',
             'idnumber' => 'f2',
-            'requiredtraining' => '10',
+            'requiredcredits' => '10',
             'description' => 'pokus',
             'publicaccess' => '1',
             'restrictedcompletion' => '0',
@@ -180,7 +180,7 @@ final class framework_test extends \advanced_testcase {
         $this->assertSame($data['description'], $framework->description);
         $this->assertSame('1', $framework->descriptionformat);
         $this->assertSame($data['publicaccess'], $framework->publicaccess);
-        $this->assertSame($data['requiredtraining'], $framework->requiredtraining);
+        $this->assertSame((float)$data['requiredcredits'], (float)$framework->requiredcredits);
         $this->assertSame($data['restrictedcompletion'], $framework->restrictedcompletion);
         $this->assertSame('0', $framework->archived);
 
@@ -196,7 +196,7 @@ final class framework_test extends \advanced_testcase {
         $data = [
             'name' => 'Some framework 2',
             'contextid' => (string)$syscontext->id,
-            'requiredtraining' => '101',
+            'requiredcredits' => '101',
         ];
         $framework2 = framework::create($data);
 
@@ -215,25 +215,25 @@ final class framework_test extends \advanced_testcase {
         try {
             $data = [
                 'id' => $framework2->id,
-                'requiredtraining' => '0',
+                'requiredcredits' => '0',
             ];
             framework::update($data);
             $this->fail('Exception expected');
         } catch (\moodle_exception $e) {
             $this->assertInstanceOf(\invalid_parameter_exception::class, $e);
-            $this->assertSame('Invalid parameter value detected (framework requiredtraining must be positive integer)', $e->getMessage());
+            $this->assertSame('Invalid parameter value detected (framework requiredcredits must be positive number)', $e->getMessage());
         }
 
         try {
             $data = [
                 'id' => $framework2->id,
-                'requiredtraining' => '-2',
+                'requiredcredits' => '-2',
             ];
             framework::update($data);
             $this->fail('Exception expected');
         } catch (\moodle_exception $e) {
             $this->assertInstanceOf(\invalid_parameter_exception::class, $e);
-            $this->assertSame('Invalid parameter value detected (framework requiredtraining must be positive integer)', $e->getMessage());
+            $this->assertSame('Invalid parameter value detected (framework requiredcredits must be positive number)', $e->getMessage());
         }
     }
 
@@ -242,7 +242,7 @@ final class framework_test extends \advanced_testcase {
         $data = [
             'name' => 'Some framework',
             'contextid' => (string)$syscontext->id,
-            'requiredtraining' => '101',
+            'requiredcredits' => '101',
         ];
         $framework = framework::create($data);
         $this->assertSame('0', $framework->archived);
@@ -259,7 +259,7 @@ final class framework_test extends \advanced_testcase {
         $data = [
             'name' => 'Some framework',
             'contextid' => (string)$syscontext->id,
-            'requiredtraining' => '101',
+            'requiredcredits' => '101',
             'archived' => '1',
         ];
         $framework = framework::create($data);
@@ -292,13 +292,13 @@ final class framework_test extends \advanced_testcase {
         $this->assertTrue(framework::is_deletable($framework2->id));
 
         $top = \tool_muprog\local\program::load_content($program1->id);
-        $top->append_training($top, $framework1->id);
+        $top->append_credits($top, $framework1->id);
 
         $this->assertFalse(framework::is_deletable($framework1->id));
         $this->assertTrue(framework::is_deletable($framework2->id));
 
         $top = \tool_muprog\local\program::load_content($program2->id);
-        $top->append_training($top, $framework2->id);
+        $top->append_credits($top, $framework2->id);
 
         $this->assertFalse(framework::is_deletable($framework1->id));
         $this->assertFalse(framework::is_deletable($framework2->id));

@@ -27,7 +27,7 @@ use core_reportbuilder\local\filters\boolean_select;
 use lang_string;
 
 /**
- * Embedded training frameworks report.
+ * Embedded credit frameworks report.
  *
  * @package     tool_mutrain
  * @copyright   2025 Petr Skoda
@@ -81,7 +81,7 @@ final class frameworks extends system_report {
             'framework:idnumber',
             'framework:context',
             'framework:fieldcount',
-            'framework:requiredtraining',
+            'framework:requiredcredits',
             'framework:restrictedcompletion',
             'framework:publicaccess',
             'framework:archived',

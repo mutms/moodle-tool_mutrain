@@ -22,7 +22,7 @@ namespace tool_mutrain\phpunit\local;
 use tool_mutrain\local\management;
 
 /**
- * Training management helper test.
+ * Credit framework management helper test.
  *
  * @group      MuTMS
  * @package    tool_mutrain
@@ -78,7 +78,7 @@ final class management_test extends \advanced_testcase {
     }
 
     public function test_get_management_url_tenant(): void {
-        if (!\tool_mutrain\local\util::is_mutenancy_available()) {
+        if (!\tool_mulib\local\mulib::is_mutenancy_available()) {
             $this->markTestSkipped('multitenancy not available');
         }
         \tool_mutenancy\local\tenancy::activate();
