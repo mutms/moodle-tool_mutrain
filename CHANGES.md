@@ -1,5 +1,13 @@
 # Changelog
 
+## mu-5.0.4-02
+
+Release date: xx/12/2025
+
+* Plugin name changed to _Training credits_.
+* Decimals are used instead of integers to match industry standards.
+* Credit frameworks UI is using Category label instead of Context.
+
 ## mu-5.0.4-01
 
 Release date: 08/12/2025

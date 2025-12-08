@@ -25,7 +25,7 @@
  */
 
 /**
- * Upgrade certifications.
+ * Upgrade training credits plugin.
  *
  * @param mixed $oldversion
  * @return true
@@ -45,6 +45,29 @@ function xmldb_tool_mutrain_upgrade($oldversion) {
 
         // Mutrain savepoint reached.
         upgrade_plugin_savepoint(true, 2025080950.01, 'tool', 'mutrain');
+    }
+
+    if ($oldversion < 2025120945) {
+        $table = new xmldb_table('tool_mutrain_framework');
+        $field = new xmldb_field('requiredcredits', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null, 'publicaccess');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+            $sql = "UPDATE {tool_mutrain_framework}
+                       SET requiredcredits = requiredtraining";
+            $DB->execute($sql);
+        }
+
+        $table = new xmldb_table('tool_mutrain_framework');
+        $field = new xmldb_field('requiredcredits', XMLDB_TYPE_NUMBER, '10, 5', null, XMLDB_NOTNULL, null, null, 'publicaccess');
+        $dbman->change_field_notnull($table, $field);
+
+        $table = new xmldb_table('tool_mutrain_framework');
+        $field = new xmldb_field('requiredtraining');
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        upgrade_plugin_savepoint(true, 2025120945, 'tool', 'mutrain');
     }
 
     return true;

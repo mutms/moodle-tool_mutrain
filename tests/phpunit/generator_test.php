@@ -54,7 +54,7 @@ final class generator_test extends \advanced_testcase {
         $this->assertSame('', $framework->description);
         $this->assertSame('1', $framework->descriptionformat);
         $this->assertSame('0', $framework->publicaccess);
-        $this->assertSame('100', $framework->requiredtraining);
+        $this->assertSame('100.00000', $framework->requiredcredits);
         $this->assertSame('0', $framework->restrictedcompletion);
         $this->assertSame('0', $framework->archived);
         $this->assertTimeCurrent($framework->timecreated);
@@ -87,7 +87,7 @@ final class generator_test extends \advanced_testcase {
             'description' => 'Some desc',
             'descriptionformat' => '2',
             'publicaccess' => '1',
-            'requiredtraining' => '50',
+            'requiredcredits' => '50.3',
             'restrictedcompletion' => '1',
             'archived' => '1',
             'fields' => [$field1->get('id')],
@@ -102,7 +102,7 @@ final class generator_test extends \advanced_testcase {
         $this->assertSame($data->description, $framework->description);
         $this->assertSame($data->descriptionformat, $framework->descriptionformat);
         $this->assertSame($data->publicaccess, $framework->publicaccess);
-        $this->assertSame($data->requiredtraining, $framework->requiredtraining);
+        $this->assertSame((float)$data->requiredcredits, (float)$framework->requiredcredits);
         $this->assertSame($data->restrictedcompletion, $framework->restrictedcompletion);
         $this->assertSame($data->archived, $framework->archived);
         $this->assertTimeCurrent($framework->timecreated);
@@ -116,7 +116,7 @@ final class generator_test extends \advanced_testcase {
         $catcontext2 = \context_coursecat::instance($category2->id);
         $framework = $generator->create_framework([
             'category' => $category2->name,
-            'requiredtraining' => 100,
+            'requiredcredits' => 100,
             'fields' => $field1->get('shortname') . ',' . $field2->get('shortname'),
         ]);
         $this->assertSame((string)$catcontext2->id, $framework->contextid);

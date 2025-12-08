@@ -157,13 +157,13 @@ final class framework extends base {
             });
 
         $columns[] = (new column(
-            'requiredtraining',
-            new lang_string('requiredtraining', 'tool_mutrain'),
+            'requiredcredits',
+            new lang_string('requiredcredits', 'tool_mutrain'),
             $this->get_entity_name()
         ))
             ->add_joins($this->get_joins())
-            ->set_type(column::TYPE_INTEGER)
-            ->add_field("{$frameworkalias}.requiredtraining")
+            ->set_type(column::TYPE_FLOAT)
+            ->add_field("{$frameworkalias}.requiredcredits")
             ->set_is_sortable(true);
 
         $columns[] = (new column(

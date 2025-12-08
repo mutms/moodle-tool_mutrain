@@ -54,7 +54,7 @@ final class tool_muprog_program extends base {
                 SELECT DISTINCT cd.fieldid, cd.instanceid, pa.userid, pa.timecompleted, p.contextid
                   FROM {tool_muprog_allocation} pa
                   JOIN {tool_muprog_program} p ON p.id = pa.programid
-                  JOIN {customfield_data} cd ON cd.instanceid = p.id AND cd.intvalue > 0
+                  JOIN {customfield_data} cd ON cd.instanceid = p.id AND cd.decvalue IS NOT NULL
                   JOIN {customfield_field} cf ON cf.id = cd.fieldid AND cf.type = 'mutrain'
                   JOIN {customfield_category} cat ON cat.id = cf.categoryid AND cat.component = 'tool_muprog' AND cat.area = 'program'
                   JOIN {user} u ON u.id = pa.userid AND u.deleted = 0 AND u.confirmed = 1
@@ -162,7 +162,7 @@ final class tool_muprog_program extends base {
         $sql = "SELECT cf.*, ctc.id AS ctcid
                   FROM {customfield_field} cf
                   JOIN {customfield_category} cat ON cat.id = cf.categoryid AND cat.component = 'tool_muprog' AND cat.area = 'program'
-                  JOIN {customfield_data} cd ON cd.fieldid = cf.id AND cd.instanceid = :programid AND cd.intvalue > 0
+                  JOIN {customfield_data} cd ON cd.fieldid = cf.id AND cd.instanceid = :programid AND cd.decvalue IS NOT NULL
              LEFT JOIN {tool_mutrain_completion} ctc ON ctc.fieldid = cf.id AND ctc.instanceid = cd.instanceid AND ctc.userid = :userid
                  WHERE cf.type = 'mutrain'
               ORDER BY cd.id ASC";

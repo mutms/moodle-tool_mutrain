@@ -80,8 +80,8 @@ class tool_mutrain_generator extends component_generator_base {
         }
         unset($record->category);
 
-        if (!isset($record->requiredtraining)) {
-            $record->requiredtraining = 100;
+        if (!isset($record->requiredcredits)) {
+            $record->requiredcredits = 100;
         }
 
         if (!empty($record->fields)) {
