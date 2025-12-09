@@ -33,6 +33,7 @@ final class framework_create extends \tool_mulib\local\ajax_form {
         $mform = $this->_form;
         $data = $this->_customdata['data'];
         $editoroptions = $this->_customdata['editoroptions'];
+        $syscontext = \context_system::instance();
 
         $mform->addElement('text', 'name', get_string('framework_name', 'tool_mutrain'), 'maxlength="254" size="50"');
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
@@ -53,7 +54,9 @@ final class framework_create extends \tool_mulib\local\ajax_form {
         $mform->setType('requiredcredits', PARAM_RAW);
         $mform->addRule('requiredcredits', get_string('required'), 'required', null, 'client');
 
-        $mform->addElement('advcheckbox', 'restrictedcompletion', get_string('restrictedcompletion', 'tool_mutrain'), ' ');
+        $mform->addElement('date_selector', 'restrictafter', get_string('restrictafter', 'tool_mutrain'), ['optional' => true]);
+
+        $mform->addElement('advcheckbox', 'restrictcontext', get_string('restrictcontext', 'tool_mutrain'), ' ');
 
         $this->add_action_buttons(true, get_string('framework_create', 'tool_mutrain'));
 

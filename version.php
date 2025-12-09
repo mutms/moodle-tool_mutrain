@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 
 /** @var stdClass $plugin */
 $plugin->component = 'tool_mutrain';
-$plugin->version = 2025120950;
+$plugin->version = 2025121050;
 $plugin->requires = 2025041400;
 $plugin->maturity = MATURITY_BETA;
 $plugin->supported = [500, 501];
@@ -36,6 +36,6 @@ $plugin->supported = [500, 501];
 $plugin->release = 'mu-5.0.4-01+';
 
 $plugin->dependencies = [
-    'tool_mulib' => 2025120950,
+    'tool_mulib' => 2025121050,
     'customfield_mutrain' => 2025120950,
 ];

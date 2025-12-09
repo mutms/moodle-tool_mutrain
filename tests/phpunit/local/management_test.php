@@ -53,12 +53,12 @@ final class management_test extends \advanced_testcase {
         $guest = guest_user();
         $manager = $this->getDataGenerator()->create_user();
         $managerrole = $DB->get_record('role', ['shortname' => 'manager']);
-        \role_assign($managerrole->id, $manager->id, $catcontext2->id);
+        role_assign($managerrole->id, $manager->id, $catcontext2->id);
 
         $viewer = $this->getDataGenerator()->create_user();
         $viewerroleid = $this->getDataGenerator()->create_role();
-        \assign_capability('tool/mutrain:viewframeworks', CAP_ALLOW, $viewerroleid, $syscontext);
-        \role_assign($viewerroleid, $viewer->id, $catcontext1->id);
+        assign_capability('tool/mutrain:viewframeworks', CAP_ALLOW, $viewerroleid, $syscontext);
+        role_assign($viewerroleid, $viewer->id, $catcontext1->id);
 
         $this->setUser(null);
         $this->assertNull(management::get_management_url());
