@@ -50,8 +50,8 @@ Feature: Managers can manage credit frameworks
       | Required credits | 33          |
     And I click on "Add framework" "button" in the ".modal-dialog" "css_element"
     Then the following should exist in the "reportbuilder-table" table:
-      | Framework name | Framework ID | Custom fields | Public | Required credits | Restricted completion validity |
-      | Framework 1    |              | 0             | No     | 33               | No                             |
+      | Framework name | Framework ID | Custom fields | Public | Required credits | Restricted to category |
+      | Framework 1    |              | 0             | No     | 33               | No                     |
 
     When I press "Add framework"
     And I set the following fields in the ".modal-dialog" "css_element" to these values:
@@ -60,12 +60,12 @@ Feature: Managers can manage credit frameworks
       | Description                    | Blah        |
       | Public                         | 1           |
       | Required credits               | 13          |
-      | Restricted completion validity | 1           |
+      | Restricted to category         | 1           |
     And I click on "Add framework" "button" in the ".modal-dialog" "css_element"
     Then the following should exist in the "reportbuilder-table" table:
-      | Framework name | Framework ID | Custom fields | Public | Required credits | Restricted completion validity |
-      | Framework 1    |              | 0             | No     | 33               | No                             |
-      | Framework 2    | fwid2        | 0             | Yes    | 13               | Yes                            |
+      | Framework name | Framework ID | Custom fields | Public | Required credits | Restricted to category |
+      | Framework 1    |              | 0             | No     | 33               | No                     |
+      | Framework 2    | fwid2        | 0             | Yes    | 13               | No                     |
 
     When I follow "Framework 2"
     And I should see "Blah"
@@ -73,7 +73,7 @@ Feature: Managers can manage credit frameworks
     And I should see "Yes" in the "Public" definition list item
     And I should see "System" in the "Category" definition list item
     And I should see "13" in the "Required credits" definition list item
-    And I should see "Yes" in the "Restricted completion validity" definition list item
+    And I should see "No" in the "Restricted to category" definition list item
     And I should see "No" in the "Archived" definition list item
     And I press "Update framework"
     And the following fields in the ".modal-dialog" "css_element" match these values:
@@ -82,15 +82,15 @@ Feature: Managers can manage credit frameworks
       | Description                    | Blah        |
       | Public                         | 1           |
       | Required credits               | 13          |
-      | Restricted completion validity | 1           |
+      | Restricted to category         | 0           |
     And I set the following fields in the ".modal-dialog" "css_element" to these values:
       | Framework name                 | Framework X |
       | Framework ID                   | fwidx       |
       | Description                    | Argh        |
       | Public                         | 0           |
       | Required credits               | 31          |
-      | Restricted completion validity | 0           |
-      | Category                        | Cat 1       |
+      | Restricted to category         | 1           |
+      | Category                       | Cat 1       |
     And I click on "Update framework" "button" in the ".modal-dialog" "css_element"
     Then I should see "Framework X"
     And I should see "Argh"
@@ -98,7 +98,7 @@ Feature: Managers can manage credit frameworks
     And I should see "No" in the "Public" definition list item
     And I should see "Cat 1" in the "Category" definition list item
     And I should see "31" in the "Required credits" definition list item
-    And I should see "No" in the "Restricted completion validity" definition list item
+    And I should see "Cat 1" in the "Restricted to category" definition list item
     And I should see "No" in the "Archived" definition list item
 
     And I navigate to "Training credits > Credit frameworks" in site administration
@@ -110,15 +110,14 @@ Feature: Managers can manage credit frameworks
       | Description                    | Argh        |
       | Public                         | 0           |
       | Required credits               | 31          |
-      | Restricted completion validity | 0           |
+      | Restricted to category         | 1           |
     And I set the following fields in the ".modal-dialog" "css_element" to these values:
       | Framework name                 | Framework 2 |
       | Framework ID                   | fwid2       |
       | Description                    | Blah        |
       | Public                         | 1           |
       | Required credits               | 13          |
-      | Restricted completion validity | 1           |
-      | Category                        | System      |
+      | Category                       | System      |
     And I click on "Update framework" "button" in the ".modal-dialog" "css_element"
     Then I should see "Framework 2"
     And I should see "Blah"
@@ -126,7 +125,7 @@ Feature: Managers can manage credit frameworks
     And I should see "Yes" in the "Public" definition list item
     And I should see "System" in the "Category" definition list item
     And I should see "13" in the "Required credits" definition list item
-    And I should see "Yes" in the "Restricted completion validity" definition list item
+    And I should see "No" in the "Restricted to category" definition list item
     And I should see "No" in the "Archived" definition list item
 
     When I click on "Archive framework" "link"
@@ -169,17 +168,17 @@ Feature: Managers can manage credit frameworks
       | name           | fields               |
       | Framework 001  | training1, training2 |
     And the following "tool_mutrain > frameworks" exist:
-      | name           | idnumber | publicaccess | requiredcredits  | restrictedcompletion |
-      | Framework 002  | fwid002  | 1            | 77               | 0                    |
-      | Framework 003  |          | 0            | 99               | 1                    |
+      | name           | idnumber | publicaccess | requiredcredits  | restrictcontext |
+      | Framework 002  | fwid002  | 1            | 77               | 0               |
+      | Framework 003  |          | 0            | 99               | 1               |
     And the following "tool_mutrain > frameworks" exist:
-      | name           | category | fields    |
-      | Framework 004  | Cat 2    | training3 |
+      | name           | category | fields    | restrictcontext |
+      | Framework 004  | Cat 2    | training3 | 1               |
     And I log in as "manager1"
     And I navigate to "Training credits > Credit frameworks" in site administration
     Then the following should exist in the "reportbuilder-table" table:
-      | Framework name | Framework ID | Custom fields | Public | Required credits | Restricted completion validity | Category |
-      | Framework 001  |              | 2             | No     | 100                     | No                      | System   |
-      | Framework 002  | fwid002      | 0             | Yes    | 77                      | No                      | System   |
-      | Framework 003  |              | 0             | No     | 99                      | Yes                     | System   |
-      | Framework 004  |              | 1             | No     | 100                     | No                      | Cat 2    |
+      | Framework name | Framework ID | Custom fields | Public | Required credits | Restricted to category | Category |
+      | Framework 001  |              | 2             | No     | 100              | No                     | System   |
+      | Framework 002  | fwid002      | 0             | Yes    | 77               | No                     | System   |
+      | Framework 003  |              | 0             | No     | 99               | No                     | System   |
+      | Framework 004  |              | 1             | No     | 100              | Cat 2                  | Cat 2    |

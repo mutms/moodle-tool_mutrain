@@ -80,10 +80,11 @@ final class frameworks extends system_report {
             'framework:name',
             'framework:idnumber',
             'framework:context',
+            'framework:publicaccess',
             'framework:fieldcount',
             'framework:requiredcredits',
-            'framework:restrictedcompletion',
-            'framework:publicaccess',
+            'framework:restrictafter',
+            'framework:restrictcontext',
             'framework:archived',
         ];
         $this->add_columns_from_entities($columns);

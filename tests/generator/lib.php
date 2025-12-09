@@ -73,12 +73,15 @@ class tool_mutrain_generator extends component_generator_base {
                 $category = $DB->get_record('course_categories', ['name' => $record->category], '*', MUST_EXIST);
                 $context = context_coursecat::instance($category->id);
                 $record->contextid = $context->id;
+            } else if (!empty($record->context)) {
+                $record->contextid = $record->context->id;
             } else {
                 $syscontext = \context_system::instance();
                 $record->contextid = $syscontext->id;
             }
         }
         unset($record->category);
+        unset($record->context);
 
         if (!isset($record->requiredcredits)) {
             $record->requiredcredits = 100;
