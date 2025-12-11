@@ -61,7 +61,7 @@ final class framework_update extends \tool_mulib\local\ajax_form {
 
         $mform->addElement('advcheckbox', 'restrictcontext', get_string('restrictcontext', 'tool_mutrain'), ' ');
 
-        $mform->addElement('date_selector', 'restrictafter', get_string('restrictafter', 'tool_mutrain'), ['optional' => true]);
+        $mform->addElement('date_time_selector', 'restrictafter', get_string('restrictafter', 'tool_mutrain'), ['optional' => true]);
 
         $mform->addElement('advcheckbox', 'archived', get_string('archived', 'tool_mutrain'), ' ');
         $mform->hardFreeze('archived');
