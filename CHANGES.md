@@ -7,7 +7,9 @@ Release date: xx/12/2025
 * Plugin name changed to _Training credits_.
 * Added _Required credits reached_ event.
 * Decimals are used instead of integers to match industry standards.
-* Credit frameworks UI is using Category label instead of Context. 
+* Credit frameworks UI is using Category label instead of Context.
+* Added credits overview to user profile page.
+* New credit frameworks are visible by default.
 
 ## mu-4.5.8-01
 

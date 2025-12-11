@@ -38,6 +38,7 @@ final class framework extends base {
     protected function get_default_tables(): array {
         return [
             'tool_mutrain_framework',
+            'tool_mutrain_credit',
             'context',
         ];
     }

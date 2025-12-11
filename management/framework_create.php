@@ -58,7 +58,7 @@ $framework->description = '';
 $framework->descriptionformat = FORMAT_HTML;
 $framework->restrictafter = null;
 $framework->restrictcontext = 0;
-$framework->publicaccess = 0;
+$framework->publicaccess = 1; // Not visible until fields are added and users obtain credits.
 
 $editoroptions = framework::get_description_editor_options();
 

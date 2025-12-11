@@ -53,7 +53,7 @@ final class generator_test extends \advanced_testcase {
         $this->assertSame(null, $framework->idnumber);
         $this->assertSame('', $framework->description);
         $this->assertSame('1', $framework->descriptionformat);
-        $this->assertSame('0', $framework->publicaccess);
+        $this->assertSame('1', $framework->publicaccess);
         $this->assertSame('100.00000', $framework->requiredcredits);
         $this->assertSame(null, $framework->restrictafter);
         $this->assertSame('0', $framework->restrictcontext);
