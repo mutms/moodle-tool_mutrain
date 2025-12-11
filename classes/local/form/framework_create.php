@@ -56,7 +56,7 @@ final class framework_create extends \tool_mulib\local\ajax_form {
 
         $mform->addElement('advcheckbox', 'restrictcontext', get_string('restrictcontext', 'tool_mutrain'), ' ');
 
-        $mform->addElement('date_selector', 'restrictafter', get_string('restrictafter', 'tool_mutrain'), ['optional' => true]);
+        $mform->addElement('date_time_selector', 'restrictafter', get_string('restrictafter', 'tool_mutrain'), ['optional' => true]);
 
         $this->add_action_buttons(true, get_string('framework_create', 'tool_mutrain'));
 
