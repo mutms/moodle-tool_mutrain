@@ -8,6 +8,8 @@ Release date: xx/12/2025
 * Added _Required credits reached_ event.
 * Decimals are used instead of integers to match industry standards.
 * Credit frameworks UI is using Category label instead of Context.
+* Added credits overview to user profile page.
+* New credit frameworks are visible by default.
 
 ## mu-5.0.4-01
 

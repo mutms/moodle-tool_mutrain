@@ -87,6 +87,10 @@ class tool_mutrain_generator extends component_generator_base {
             $record->requiredcredits = 100;
         }
 
+        if (!isset($record->publicaccess)) {
+            $record->publicaccess = 1;
+        }
+
         if (!empty($record->fields)) {
             $fields = $record->fields;
         } else {

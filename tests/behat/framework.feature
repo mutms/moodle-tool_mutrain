@@ -51,26 +51,26 @@ Feature: Managers can manage credit frameworks
     And I click on "Add framework" "button" in the ".modal-dialog" "css_element"
     Then the following should exist in the "reportbuilder-table" table:
       | Framework name | Framework ID | Custom fields | Public | Required credits | Restricted to category |
-      | Framework 1    |              | 0             | No     | 33               | No                     |
+      | Framework 1    |              | 0             | Yes    | 33               | No                     |
 
     When I press "Add framework"
     And I set the following fields in the ".modal-dialog" "css_element" to these values:
       | Framework name                 | Framework 2 |
       | Framework ID                   | fwid2       |
       | Description                    | Blah        |
-      | Public                         | 1           |
+      | Public                         | 0           |
       | Required credits               | 13          |
       | Restricted to category         | 1           |
     And I click on "Add framework" "button" in the ".modal-dialog" "css_element"
     Then the following should exist in the "reportbuilder-table" table:
       | Framework name | Framework ID | Custom fields | Public | Required credits | Restricted to category |
-      | Framework 1    |              | 0             | No     | 33               | No                     |
-      | Framework 2    | fwid2        | 0             | Yes    | 13               | No                     |
+      | Framework 1    |              | 0             | Yes    | 33               | No                     |
+      | Framework 2    | fwid2        | 0             | No     | 13               | No                     |
 
     When I follow "Framework 2"
     And I should see "Blah"
     And I should see "fwid2" in the "Framework ID" definition list item
-    And I should see "Yes" in the "Public" definition list item
+    And I should see "No" in the "Public" definition list item
     And I should see "System" in the "Category" definition list item
     And I should see "13" in the "Required credits" definition list item
     And I should see "No" in the "Restricted to category" definition list item
@@ -80,14 +80,14 @@ Feature: Managers can manage credit frameworks
       | Framework name                 | Framework 2 |
       | Framework ID                   | fwid2       |
       | Description                    | Blah        |
-      | Public                         | 1           |
+      | Public                         | 0           |
       | Required credits               | 13          |
       | Restricted to category         | 0           |
     And I set the following fields in the ".modal-dialog" "css_element" to these values:
       | Framework name                 | Framework X |
       | Framework ID                   | fwidx       |
       | Description                    | Argh        |
-      | Public                         | 0           |
+      | Public                         | 1           |
       | Required credits               | 31          |
       | Restricted to category         | 1           |
       | Category                       | Cat 1       |
@@ -95,7 +95,7 @@ Feature: Managers can manage credit frameworks
     Then I should see "Framework X"
     And I should see "Argh"
     And I should see "fwidx" in the "Framework ID" definition list item
-    And I should see "No" in the "Public" definition list item
+    And I should see "Yes" in the "Public" definition list item
     And I should see "Cat 1" in the "Category" definition list item
     And I should see "31" in the "Required credits" definition list item
     And I should see "Cat 1" in the "Restricted to category" definition list item
@@ -108,21 +108,21 @@ Feature: Managers can manage credit frameworks
       | Framework name                 | Framework X |
       | Framework ID                   | fwidx       |
       | Description                    | Argh        |
-      | Public                         | 0           |
+      | Public                         | 1           |
       | Required credits               | 31          |
       | Restricted to category         | 1           |
     And I set the following fields in the ".modal-dialog" "css_element" to these values:
       | Framework name                 | Framework 2 |
       | Framework ID                   | fwid2       |
       | Description                    | Blah        |
-      | Public                         | 1           |
+      | Public                         | 0           |
       | Required credits               | 13          |
       | Category                       | System      |
     And I click on "Update framework" "button" in the ".modal-dialog" "css_element"
     Then I should see "Framework 2"
     And I should see "Blah"
     And I should see "fwid2" in the "Framework ID" definition list item
-    And I should see "Yes" in the "Public" definition list item
+    And I should see "No" in the "Public" definition list item
     And I should see "System" in the "Category" definition list item
     And I should see "13" in the "Required credits" definition list item
     And I should see "No" in the "Restricted to category" definition list item
@@ -178,7 +178,7 @@ Feature: Managers can manage credit frameworks
     And I navigate to "Training credits > Credit frameworks" in site administration
     Then the following should exist in the "reportbuilder-table" table:
       | Framework name | Framework ID | Custom fields | Public | Required credits | Restricted to category | Category |
-      | Framework 001  |              | 2             | No     | 100              | No                     | System   |
+      | Framework 001  |              | 2             | Yes    | 100              | No                     | System   |
       | Framework 002  | fwid002      | 0             | Yes    | 77               | No                     | System   |
       | Framework 003  |              | 0             | No     | 99               | No                     | System   |
-      | Framework 004  |              | 1             | No     | 100              | Cat 2                  | Cat 2    |
+      | Framework 004  |              | 1             | Yes    | 100              | Cat 2                  | Cat 2    |
