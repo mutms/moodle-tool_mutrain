@@ -77,12 +77,12 @@ Feature: Course completion awards credits
     And I am on the "student1" "user > profile" page
     And I follow "My credits"
     Then the following should exist in the "reportbuilder-table" table:
-      | Framework name | Restricted to category | Obtained after | Required credits | Credits |
-      | Framework 1    | No                     | Not set        | 5                | 4       |
+      | Framework name | Restricted to category | Only obtained after | Required credits | Credits |
+      | Framework 1    | No                     | Not set             | 5                | 4       |
     And I log out
 
     When I am on the "student1" "user > profile" page logged in as "viewer1"
     And I follow "Credits"
     Then the following should exist in the "reportbuilder-table" table:
-      | Framework name | Restricted to category | Obtained after | Required credits | Credits |
-      | Framework 1    | No                     | Not set        | 5                | 4       |
+      | Framework name | Restricted to category | Only obtained after | Required credits | Credits |
+      | Framework 1    | No                     | Not set             | 5                | 4       |

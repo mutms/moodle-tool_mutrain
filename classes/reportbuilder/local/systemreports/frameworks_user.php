@@ -100,13 +100,12 @@ final class frameworks_user extends system_report {
             'framework:name',
             'framework:restrictcontext',
             'framework:restrictafter',
-            'framework:requiredcredits',
         ];
         $this->add_columns_from_entities($columns);
 
         $column = (new column(
             'credits',
-            new lang_string('credits', 'tool_mutrain'),
+            new lang_string('credits_current', 'tool_mutrain'),
             $this->frameworkentity->get_entity_name()
         ))
             ->add_joins($this->get_joins())
@@ -114,6 +113,8 @@ final class frameworks_user extends system_report {
             ->add_field("{$this->creditalias}.credits")
             ->set_is_sortable(true);
         $this->add_column($column);
+
+        $this->add_column_from_entity('framework:requiredcredits');
 
         $this->set_initial_sort_column('framework:name', SORT_ASC);
     }
