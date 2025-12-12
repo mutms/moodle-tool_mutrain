@@ -69,6 +69,7 @@ $PAGE->navbar->add(get_string('profile'), new moodle_url('/user/profile.php', ['
 $PAGE->navbar->add($title);
 
 echo $OUTPUT->header();
+echo $OUTPUT->heading($title);
 
 $report = \core_reportbuilder\system_report_factory::create(
     \tool_mutrain\reportbuilder\local\systemreports\frameworks_user::class,
