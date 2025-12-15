@@ -2,7 +2,7 @@
 
 ## mu-4.5.8-02
 
-Release date: xx/12/2025
+Release date: 16/12/2025
 
 * Plugin name changed to _Training credits_.
 * Added _Required credits reached_ event.
