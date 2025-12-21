@@ -9,6 +9,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ### Changed
 
 - Switched to new change log format
+- Improved performance of Certifications management page on sites with large number of contexts
 
 ## [mu-4.5.8-02] - 2025-12-16
 
