@@ -22,7 +22,7 @@ namespace tool_mutrain\external\form_autocomplete;
 /**
  * Framework create/update contextid autocompletion.
  *
- * @package     tool_muprog
+ * @package     tool_mutrain
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
