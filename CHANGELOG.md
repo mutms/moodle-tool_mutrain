@@ -10,6 +10,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 - Switched to new change log format
 - Improved performance of Certifications management page on sites with large number of contexts
+- Fixed category selection autocomplete element in framework editing forms
 
 ## [mu-5.0.4-02] - 2025-12-16
 
