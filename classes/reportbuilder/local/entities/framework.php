@@ -117,7 +117,7 @@ final class framework extends base {
                 $context = \context::instance_by_id($row->contextid);
                 $name = format_string($row->name);
                 if (has_capability('tool/mutrain:viewframeworks', $context)) {
-                    $url = new \moodle_url('/admin/tool/mutrain/management/framework.php', ['id' => $row->id]);
+                    $url = new \core\url('/admin/tool/mutrain/management/framework.php', ['id' => $row->id]);
                     $name = \html_writer::link($url, $name);
                 }
                 return $name;
@@ -167,7 +167,7 @@ final class framework extends base {
                 if (!has_capability('tool/mutrain:viewframeworks', $context)) {
                     return $name;
                 }
-                $url = new \moodle_url('/admin/tool/mutrain/management/index.php', ['contextid' => $context->id]);
+                $url = new \core\url('/admin/tool/mutrain/management/index.php', ['contextid' => $context->id]);
                 $name = \html_writer::link($url, $name);
                 return $name;
             });
