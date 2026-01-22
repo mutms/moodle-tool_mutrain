@@ -43,13 +43,13 @@ $usercontext = context_user::instance($userid);
 $PAGE->set_context($usercontext);
 
 if (!\tool_mulib\local\mulib::is_mutrain_active()) {
-    redirect(new moodle_url('/'));
+    redirect(new core\url('/'));
 }
 if (isguestuser()) {
-    redirect(new moodle_url('/'));
+    redirect(new core\url('/'));
 }
 
-$currenturl = new moodle_url('/admin/tool/mutrain/my/index.php');
+$currenturl = new core\url('/admin/tool/mutrain/my/index.php');
 
 $user = $DB->get_record('user', ['id' => $userid, 'deleted' => 0], '*', MUST_EXIST);
 
@@ -65,7 +65,7 @@ $PAGE->navigation->extend_for_user($user);
 $PAGE->set_title($title);
 $PAGE->set_url($currenturl);
 $PAGE->set_pagelayout('report');
-$PAGE->navbar->add(get_string('profile'), new moodle_url('/user/profile.php', ['id' => $user->id]));
+$PAGE->navbar->add(get_string('profile'), new core\url('/user/profile.php', ['id' => $user->id]));
 $PAGE->navbar->add($title);
 
 echo $OUTPUT->header();

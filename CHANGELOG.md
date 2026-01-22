@@ -6,7 +6,15 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased]
 
-- No changes
+### Changed
+
+- Added separate "Move framework" action for moving of credit frameworks into different contexts to match other MuTMS plugins
+- Improved navigation to start with "Credit frameworks" instead of "System"
+
+### Fixed
+
+- Frameworks from deleted categories will be automatically marked as archived and moved to parent context
+- Fixed usage of legacy moodle_url class
 
 ## [mu-4.5.8-03] - 2025-12-31
 
