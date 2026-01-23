@@ -17,26 +17,26 @@
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
 /**
- * User credits per framework.
+ * User completions for given framework.
  *
  * @package    tool_mutrain
- * @copyright  2025 Petr Skoda
+ * @copyright  2026 Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
-/** @var stdClass $CFG */
 /** @var stdClass $USER */
 
 require('../../../../config.php');
 
+$frameworkid = required_param('frameworkid', PARAM_INT);
 $userid = optional_param('userid', 0, PARAM_INT);
 
 require_login();
 
-$currenturl = new core\url('/admin/tool/mutrain/my/index.php');
+$currenturl = new core\url('/admin/tool/mutrain/my/completions.php', ['frameworkid' => $frameworkid]);
 
 if ($userid) {
     $currenturl->param('userid', $userid);
@@ -56,6 +56,11 @@ if (isguestuser()) {
 }
 
 $user = $DB->get_record('user', ['id' => $userid, 'deleted' => 0], '*', MUST_EXIST);
+$framework = $DB->get_record('tool_mutrain_framework', ['id' => $frameworkid, 'archived' => 0], '*', MUST_EXIST);
+
+if (!$framework->publicaccess) {
+    require_capability('tool/mutrain:viewframeworks', \context::instance_by_id($framework->contextid));
+}
 
 if ($userid != $USER->id) {
     require_capability('tool/mutrain:viewusercredits', $usercontext);
@@ -69,14 +74,19 @@ $PAGE->navigation->extend_for_user($user);
 $PAGE->set_title($title);
 $PAGE->set_pagelayout('report');
 $PAGE->navbar->add(get_string('profile'), new core\url('/user/profile.php', ['id' => $user->id]));
-$PAGE->navbar->add($title);
+$PAGE->navbar->add($title, new core\url('/admin/tool/mutrain/my/index.php', ['userid' => $user->id]));
+$PAGE->navbar->add(format_string($framework->name));
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading($title);
+echo $OUTPUT->heading(format_string($framework->name));
 
 $report = \core_reportbuilder\system_report_factory::create(
-    \tool_mutrain\reportbuilder\local\systemreports\frameworks_user::class,
-    $usercontext
+    \tool_mutrain\reportbuilder\local\systemreports\completions_user::class,
+    $usercontext,
+    '',
+    '',
+    0,
+    ['frameworkid' => $framework->id]
 );
 echo $report->output();
 

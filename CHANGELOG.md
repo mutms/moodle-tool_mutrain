@@ -6,6 +6,10 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased]
 
+### Added
+
+- Added link to detailed report with completion credits
+
 ### Changed
 
 - Added separate "Move framework" action for moving of credit frameworks into different contexts to match other MuTMS plugins
