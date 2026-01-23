@@ -55,8 +55,7 @@ class renderer extends \plugin_renderer_base {
         }
         $details->add(get_string('framework_idnumber', 'tool_mutrain'), $idnumber);
 
-        $url = new url('/admin/tool/mutrain/management/index.php', ['contextid' => $context->id]);
-        $category = html_writer::link($url, $context->get_context_name(false));
+        $category = $context->get_context_name(false);
         if (has_capability('tool/mutrain:manageframeworks', $context)) {
             $url = new url('/admin/tool/mutrain/management/framework_move.php', ['id' => $framework->id]);
             $action = new \tool_mulib\output\ajax_form\icon($url, get_string('framework_move', 'tool_mutrain'), 'i/edit');
