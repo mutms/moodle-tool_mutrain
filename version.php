@@ -17,7 +17,7 @@
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
 /**
- * Training plugin.
+ * Training credits plugin.
  *
  * @package    tool_mutrain
  * @copyright  2025 Petr Skoda
