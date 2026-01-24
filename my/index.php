@@ -17,7 +17,7 @@
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
 /**
- * User credits per framework.
+ * Credits obtained by user in frameworks.
  *
  * @package    tool_mutrain
  * @copyright  2025 Petr Skoda
@@ -27,7 +27,6 @@
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
-/** @var stdClass $CFG */
 /** @var stdClass $USER */
 
 require('../../../../config.php');
@@ -35,6 +34,9 @@ require('../../../../config.php');
 $userid = optional_param('userid', 0, PARAM_INT);
 
 require_login();
+if (isguestuser()) {
+    redirect(new core\url('/'));
+}
 
 $currenturl = new core\url('/admin/tool/mutrain/my/index.php');
 
@@ -51,15 +53,14 @@ $PAGE->set_context($usercontext);
 if (!\tool_mulib\local\mulib::is_mutrain_active()) {
     redirect(new core\url('/'));
 }
-if (isguestuser()) {
+
+$user = $DB->get_record('user', ['id' => $userid, 'deleted' => 0], '*', MUST_EXIST);
+if (isguestuser($user)) {
     redirect(new core\url('/'));
 }
 
-$user = $DB->get_record('user', ['id' => $userid, 'deleted' => 0], '*', MUST_EXIST);
-
 if ($userid != $USER->id) {
     require_capability('tool/mutrain:viewusercredits', $usercontext);
-    $currenturl->param('userid', $userid);
     $title = get_string('credits', 'tool_mutrain');
 } else {
     $title = get_string('credits_my', 'tool_mutrain');

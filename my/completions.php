@@ -35,6 +35,9 @@ $frameworkid = required_param('frameworkid', PARAM_INT);
 $userid = optional_param('userid', 0, PARAM_INT);
 
 require_login();
+if (isguestuser()) {
+    redirect(new core\url('/'));
+}
 
 $currenturl = new core\url('/admin/tool/mutrain/my/completions.php', ['frameworkid' => $frameworkid]);
 
@@ -51,11 +54,12 @@ $PAGE->set_context($usercontext);
 if (!\tool_mulib\local\mulib::is_mutrain_active()) {
     redirect(new core\url('/'));
 }
-if (isguestuser()) {
+
+$user = $DB->get_record('user', ['id' => $userid, 'deleted' => 0], '*', MUST_EXIST);
+if (isguestuser($user)) {
     redirect(new core\url('/'));
 }
 
-$user = $DB->get_record('user', ['id' => $userid, 'deleted' => 0], '*', MUST_EXIST);
 $framework = $DB->get_record('tool_mutrain_framework', ['id' => $frameworkid, 'archived' => 0], '*', MUST_EXIST);
 
 if (!$framework->publicaccess) {
@@ -64,7 +68,6 @@ if (!$framework->publicaccess) {
 
 if ($userid != $USER->id) {
     require_capability('tool/mutrain:viewusercredits', $usercontext);
-    $currenturl->param('userid', $userid);
     $title = get_string('credits', 'tool_mutrain');
 } else {
     $title = get_string('credits_my', 'tool_mutrain');
