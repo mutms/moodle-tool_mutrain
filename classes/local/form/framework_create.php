@@ -19,7 +19,17 @@
 
 namespace tool_mutrain\local\form;
 
-use tool_mutrain\external\form_autocomplete\framework_contextid;
+use tool_mulib\muform\element\autocomplete;
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\checkbox;
+use tool_mulib\muform\element\datetime;
+use tool_mulib\muform\element\editor;
+use tool_mulib\muform\element\number;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\element\text;
+use tool_mulib\muform\form;
+use tool_mutrain\muform\autocomplete\framework_contextid;
 
 /**
  * Create a new credit framework.
@@ -30,64 +40,49 @@ use tool_mutrain\external\form_autocomplete\framework_contextid;
  * @author     Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class framework_create extends \tool_mulib\local\ajax_form {
+final class framework_create extends form {
     #[\Override]
-    protected function definition() {
-        $mform = $this->_form;
-        $data = $this->_customdata['data'];
-        $editoroptions = $this->_customdata['editoroptions'];
-        $context = $this->_customdata['context'];
+    protected function definition(): void {
+        $current = $this->get_current_data();
 
-        $mform->addElement('text', 'name', get_string('framework_name', 'tool_mutrain'), 'maxlength="254" size="50"');
-        $mform->addRule('name', get_string('required'), 'required', null, 'client');
-        $mform->setType('name', PARAM_TEXT);
+        $name = new text('name', get_string('framework_name', 'tool_mutrain'), ['maxlength' => 254]);
+        $name->set_required(true);
+        $this->add($name);
 
-        $mform->addElement('text', 'idnumber', get_string('framework_idnumber', 'tool_mutrain'), 'maxlength="100" size="50"');
-        $mform->setType('idnumber', PARAM_RAW); // Idnumbers are plain text.
+        $this->add(new text('idnumber', get_string('framework_idnumber', 'tool_mutrain'), ['type' => 'rawtext', 'maxlength' => 100]));
 
-        framework_contextid::add_element($mform, [], 'contextid', get_string('category'), $context);
+        $contextid = new autocomplete('contextid', get_string('category'), new framework_contextid((int)$current['contextid']));
+        $contextid->set_required(true);
+        $this->add($contextid);
 
-        $mform->addElement('advcheckbox', 'publicaccess', get_string('publicaccess', 'tool_mutrain'), ' ');
+        $this->add(new checkbox('publicaccess', get_string('publicaccess', 'tool_mutrain')));
 
-        $mform->addElement('editor', 'description_editor', get_string('description'), ['rows' => 3], $editoroptions);
-        $mform->setType('description_editor', PARAM_RAW);
+        $this->add(new editor('description', get_string('description'), 0, false, ['rows' => 3]));
 
-        $mform->addElement('text', 'requiredcredits', get_string('requiredcredits', 'tool_mutrain'));
-        $mform->setType('requiredcredits', PARAM_RAW);
-        $mform->addRule('requiredcredits', get_string('required'), 'required', null, 'client');
+        $requiredcredits = new number('requiredcredits', get_string('requiredcredits', 'tool_mutrain'), ['decimals' => 2, 'min' => 0, 'width' => 'small']);
+        $requiredcredits->set_required(true);
+        $this->add($requiredcredits);
 
-        $mform->addElement('advcheckbox', 'restrictcontext', get_string('restrictcontext', 'tool_mutrain'), ' ');
+        $this->add(new checkbox('restrictcontext', get_string('restrictcontext', 'tool_mutrain')));
 
-        $mform->addElement('date_time_selector', 'restrictafter', get_string('restrictafter', 'tool_mutrain'), ['optional' => true]);
+        $this->add(new datetime('restrictafter', get_string('restrictafter', 'tool_mutrain')));
 
-        $this->add_action_buttons(true, get_string('framework_create', 'tool_mutrain'));
-
-        $this->set_data($data);
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('framework_create', 'tool_mutrain')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 
     #[\Override]
-    public function validation($data, $files) {
+    protected function validation(array $data, array &$allerrors): void {
         global $DB;
-        $context = $this->_customdata['context'];
-
-        $errors = parent::validation($data, $files);
-
         if (trim($data['idnumber']) !== '') {
-            if ($DB->record_exists_select('tool_mutrain_framework', "LOWER(idnumber) = LOWER(?)", [$data['idnumber']])) {
-                $errors['idnumber'] = get_string('error');
+            $select = "LOWER(idnumber) = LOWER(?) AND id <> ?";
+            if ($DB->record_exists_select('tool_mutrain_framework', $select, [$data['idnumber'], 0])) {
+                $allerrors['idnumber'][] = get_string('error');
             }
         }
-
-        $requiredcredits = str_replace(',', '.', $data['requiredcredits']);
-        if (!is_numeric($requiredcredits) || $requiredcredits <= 0) {
-            $errors['requiredcredits'] = get_string('error');
+        if ($data['requiredcredits'] !== null && $data['requiredcredits'] <= 0) {
+            $allerrors['requiredcredits'][] = get_string('error');
         }
-
-        $error = framework_contextid::validate_value($data['contextid'], [], $context);
-        if ($error !== null) {
-            $errors['contextid'] = $error;
-        }
-
-        return $errors;
     }
 }

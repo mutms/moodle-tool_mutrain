@@ -27,12 +27,11 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use tool_mulib\muform\handler;
 use tool_mutrain\local\framework;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
-
-define('AJAX_SCRIPT', true);
 
 require('../../../../config.php');
 
@@ -47,21 +46,24 @@ require_capability('tool/mutrain:manageframeworks', $context);
 $currenturl = new core\url('/admin/tool/mutrain/management/framework_update.php', ['id' => $framework->id]);
 $PAGE->set_context($context);
 $PAGE->set_url($currenturl);
+$title = get_string('framework_update', 'tool_mutrain');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
 
 $returnurl = new core\url('/admin/tool/mutrain/management/index.php', ['contextid' => $context->id]);
 
-$data = clone($framework);
+$handler = handler::from_request();
 
-$editoroptions = framework::get_description_editor_options();
-$data = file_prepare_standard_editor($data, 'description', $editoroptions);
-
-$form = new \tool_mutrain\local\form\framework_update(null, ['data' => $data, 'editoroptions' => $editoroptions, 'context' => $context]);
+$form = new \tool_mutrain\local\form\framework_update($currenturl, $framework);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
-} else if ($data = $form->get_data()) {
-    framework::update((array)$data);
-    $form->ajax_form_submitted($returnurl);
+    $handler->cancelled($returnurl);
 }
 
-$form->ajax_form_render();
+if ($data = $form->get_data()) {
+    $data->id = $framework->id;
+    framework::update((array)$data);
+    $handler->submitted($returnurl);
+}
+
+$handler->render($form);

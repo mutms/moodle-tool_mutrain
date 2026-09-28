@@ -26,14 +26,13 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use tool_mulib\muform\handler;
 use tool_mutrain\local\framework;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
 /** @var stdClass $CFG */
-
-define('AJAX_SCRIPT', true);
 
 require('../../../../config.php');
 require_once("$CFG->libdir/filelib.php");
@@ -49,6 +48,9 @@ require_capability('tool/mutrain:manageframeworks', $context);
 $currenturl = new core\url('/admin/tool/mutrain/management/field_add.php', ['frameworkid' => $frameworkid]);
 $PAGE->set_context($context);
 $PAGE->set_url($currenturl);
+$title = get_string('field_add', 'tool_mutrain');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
 
 $returnurl = new core\url('/admin/tool/mutrain/management/framework.php', ['id' => $frameworkid]);
 
@@ -56,15 +58,17 @@ if ($framework->archived) {
     redirect($returnurl);
 }
 
-$data = clone($framework);
+$handler = handler::from_request();
 
-$form = new \tool_mutrain\local\form\field_add(null, ['framework' => $framework, 'context' => $context]);
+$form = new \tool_mutrain\local\form\field_add($currenturl, [], ['framework' => $framework]);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
-} else if ($data = $form->get_data()) {
-    framework::field_add($data->frameworkid, $data->fieldid);
-    $form->ajax_form_submitted($returnurl);
+    $handler->cancelled($returnurl);
 }
 
-$form->ajax_form_render();
+if ($data = $form->get_data()) {
+    framework::field_add($framework->id, (int)$data->fieldid);
+    $handler->submitted($returnurl);
+}
+
+$handler->render($form);

@@ -87,16 +87,16 @@ Feature: Managers can manage credits custom program fields
     And I am on the "Program 1" "tool_muprog > Program" page
 
     When I press "Edit"
-    And I set the following fields to these values:
-      | Mandatory training | 7 |
-    And I press "Update program"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | customfield_training2 | 7 |
+    And I click on "Update program" "button" in the "dialog[open]" "css_element"
     Then I should see "7" in the "Mandatory training" definition list item
     And I should not see "Optional training"
 
     When I press "Edit"
-    And I set the following fields to these values:
-      | Mandatory training |   |
-      | Optional training  | 3 |
-    And I press "Update program"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | customfield_training2 |   |
+      | customfield_training1 | 3 |
+    And I click on "Update program" "button" in the "dialog[open]" "css_element"
     Then I should see "3" in the "Optional training" definition list item
     And I should not see "Mandatory training"

@@ -58,7 +58,7 @@ class renderer extends \plugin_renderer_base {
         $category = $context->get_context_name(false);
         if (has_capability('tool/mutrain:manageframeworks', $context)) {
             $url = new url('/admin/tool/mutrain/management/framework_move.php', ['id' => $framework->id]);
-            $action = new \tool_mulib\output\ajax_form\icon($url, get_string('framework_move', 'tool_mutrain'), 'i/edit');
+            $action = new \tool_mulib\output\muform\dialog\icon($url, get_string('framework_move', 'tool_mutrain'), 'i/edit');
             $category .= $this->output->render($action);
         }
         $details->add(get_string('category'), $category);
@@ -81,10 +81,10 @@ class renderer extends \plugin_renderer_base {
         if (has_capability('tool/mutrain:manageframeworks', $context)) {
             if ($framework->archived) {
                 $url = new url('/admin/tool/mutrain/management/framework_restore.php', ['id' => $framework->id]);
-                $action = new \tool_mulib\output\ajax_form\icon($url, get_string('framework_restore', 'tool_mutrain'), 'i/settings');
+                $action = new \tool_mulib\output\muform\dialog\icon($url, get_string('framework_restore', 'tool_mutrain'), 'i/settings');
             } else {
                 $url = new url('/admin/tool/mutrain/management/framework_archive.php', ['id' => $framework->id]);
-                $action = new \tool_mulib\output\ajax_form\icon($url, get_string('framework_archive', 'tool_mutrain'), 'i/settings');
+                $action = new \tool_mulib\output\muform\dialog\icon($url, get_string('framework_archive', 'tool_mutrain'), 'i/settings');
             }
             $action->set_form_size('sm');
             $archived .= $this->output->render($action);
@@ -93,12 +93,12 @@ class renderer extends \plugin_renderer_base {
 
         if (has_capability('tool/mutrain:manageframeworks', $context)) {
             $url = new url('/admin/tool/mutrain/management/framework_update.php', ['id' => $framework->id]);
-            $button = new \tool_mulib\output\ajax_form\button($url, get_string('framework_update', 'tool_mutrain'));
+            $button = new \tool_mulib\output\muform\dialog\button($url, get_string('framework_update', 'tool_mutrain'));
             $buttons[] = $this->output->render($button);
             if (\tool_mutrain\local\framework::is_deletable($framework->id)) {
                 $url = new url('/admin/tool/mutrain/management/framework_delete.php', ['id' => $framework->id]);
-                $button = new \tool_mulib\output\ajax_form\button($url, get_string('framework_delete', 'tool_mutrain'));
-                $button->set_submitted_action($button::SUBMITTED_ACTION_REDIRECT);
+                $button = new \tool_mulib\output\muform\dialog\button($url, get_string('framework_delete', 'tool_mutrain'));
+                $button->set_submitted_action(\tool_mulib\muform\handler\dialog::ACTION_REDIRECT);
                 $buttons[] = $this->output->render($button);
             }
         }

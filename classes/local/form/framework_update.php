@@ -19,6 +19,16 @@
 
 namespace tool_mutrain\local\form;
 
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\checkbox;
+use tool_mulib\muform\element\datetime;
+use tool_mulib\muform\element\editor;
+use tool_mulib\muform\element\number;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\element\text;
+use tool_mulib\muform\form;
+
 /**
  * Update credit framework.
  *
@@ -28,60 +38,46 @@ namespace tool_mutrain\local\form;
  * @author     Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class framework_update extends \tool_mulib\local\ajax_form {
+final class framework_update extends form {
     #[\Override]
-    protected function definition() {
-        $mform = $this->_form;
-        $data = $this->_customdata['data'];
-        $editoroptions = $this->_customdata['editoroptions'];
-        /** @var \context $context */
-        $context = $this->_customdata['context'];
+    protected function definition(): void {
+        $current = $this->get_current_data();
 
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
+        $name = new text('name', get_string('framework_name', 'tool_mutrain'), ['maxlength' => 254]);
+        $name->set_required(true);
+        $this->add($name);
 
-        $mform->addElement('text', 'name', get_string('framework_name', 'tool_mutrain'), 'maxlength="254" size="50"');
-        $mform->addRule('name', get_string('required'), 'required', null, 'client');
-        $mform->setType('name', PARAM_TEXT);
+        $this->add(new text('idnumber', get_string('framework_idnumber', 'tool_mutrain'), ['type' => 'rawtext', 'maxlength' => 100]));
 
-        $mform->addElement('text', 'idnumber', get_string('framework_idnumber', 'tool_mutrain'), 'maxlength="100" size="50"');
-        $mform->setType('idnumber', PARAM_RAW); // Idnumbers are plain text.
+        $this->add(new checkbox('publicaccess', get_string('publicaccess', 'tool_mutrain')));
 
-        $mform->addElement('advcheckbox', 'publicaccess', get_string('publicaccess', 'tool_mutrain'), ' ');
+        $this->add(new editor('description', get_string('description'), 0, false, ['rows' => 3]));
 
-        $mform->addElement('editor', 'description_editor', get_string('description'), ['rows' => 3], $editoroptions);
-        $mform->setType('description_editor', PARAM_RAW);
+        $requiredcredits = new number('requiredcredits', get_string('requiredcredits', 'tool_mutrain'), ['decimals' => 2, 'min' => 0, 'width' => 'small']);
+        $requiredcredits->set_required(true);
+        $this->add($requiredcredits);
 
-        $mform->addElement('text', 'requiredcredits', get_string('requiredcredits', 'tool_mutrain'));
-        $mform->setType('requiredcredits', PARAM_RAW);
-        $mform->addRule('requiredcredits', get_string('required'), 'required', null, 'client');
-        $data->requiredcredits = format_float($data->requiredcredits, 2, true, true);
+        $context = \context::instance_by_id($current['contextid']);
+        $this->add(new checkbox('restrictcontext', get_string('restrictcontext', 'tool_mutrain'), $context->get_context_name(false)));
 
-        $mform->addElement('advcheckbox', 'restrictcontext', get_string('restrictcontext', 'tool_mutrain'), $context->get_context_name(false));
+        $this->add(new datetime('restrictafter', get_string('restrictafter', 'tool_mutrain')));
 
-        $mform->addElement('date_time_selector', 'restrictafter', get_string('restrictafter', 'tool_mutrain'), ['optional' => true]);
-
-        $this->add_action_buttons(true, get_string('framework_update', 'tool_mutrain'));
-
-        $this->set_data($data);
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('framework_update', 'tool_mutrain')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 
     #[\Override]
-    public function validation($data, $files) {
+    protected function validation(array $data, array &$allerrors): void {
         global $DB;
-        $errors = parent::validation($data, $files);
-
         if (trim($data['idnumber']) !== '') {
-            if ($DB->record_exists_select('tool_mutrain_framework', "LOWER(idnumber) = LOWER(?) AND id <> ?", [$data['idnumber'], $data['id']])) {
-                $errors['idnumber'] = get_string('error');
+            $select = "LOWER(idnumber) = LOWER(?) AND id <> ?";
+            if ($DB->record_exists_select('tool_mutrain_framework', $select, [$data['idnumber'], (int)$this->get_current_data()['id']])) {
+                $allerrors['idnumber'][] = get_string('error');
             }
         }
-
-        $requiredcredits = str_replace(',', '.', $data['requiredcredits']);
-        if (!is_numeric($requiredcredits) || $requiredcredits <= 0) {
-            $errors['requiredcredits'] = get_string('error');
+        if ($data['requiredcredits'] !== null && $data['requiredcredits'] <= 0) {
+            $allerrors['requiredcredits'][] = get_string('error');
         }
-
-        return $errors;
     }
 }

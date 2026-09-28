@@ -24,12 +24,11 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use tool_mulib\muform\handler;
 use tool_mutrain\local\framework;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
-
-define('AJAX_SCRIPT', true);
 
 require('../../../../config.php');
 
@@ -44,18 +43,23 @@ require_capability('tool/mutrain:manageframeworks', $context);
 $currenturl = new core\url('/admin/tool/mutrain/management/framework_move.php', ['id' => $framework->id]);
 $PAGE->set_context($context);
 $PAGE->set_url($currenturl);
+$title = get_string('framework_move', 'tool_mutrain');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
 
 $returnurl = new core\url('/admin/tool/mutrain/management/framework.php', ['id' => $framework->id]);
 
-$data = clone($framework);
+$handler = handler::from_request();
 
-$form = new \tool_mutrain\local\form\framework_move(null, ['data' => $data, 'context' => $context]);
+$form = new \tool_mutrain\local\form\framework_move($currenturl, $framework);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
-} else if ($data = $form->get_data()) {
-    framework::move($data->id, $data->contextid, $data->restrictcontext);
-    $form->ajax_form_submitted($returnurl);
+    $handler->cancelled($returnurl);
 }
 
-$form->ajax_form_render();
+if ($data = $form->get_data()) {
+    framework::move($framework->id, (int)$data->contextid, (int)$data->restrictcontext);
+    $handler->submitted($returnurl);
+}
+
+$handler->render($form);

@@ -62,8 +62,8 @@ $buttons = [];
 
 if (has_capability('tool/mutrain:manageframeworks', $context)) {
     $url = new core\url('/admin/tool/mutrain/management/framework_create.php', ['contextid' => $context->id]);
-    $button = new tool_mulib\output\ajax_form\button($url, get_string('framework_create', 'tool_mutrain'));
-    $button->set_submitted_action($button::SUBMITTED_ACTION_REDIRECT);
+    $button = new tool_mulib\output\muform\dialog\button($url, get_string('framework_create', 'tool_mutrain'));
+    $button->set_submitted_action(\tool_mulib\muform\handler\dialog::ACTION_REDIRECT);
     $buttons[] = $OUTPUT->render($button);
 }
 

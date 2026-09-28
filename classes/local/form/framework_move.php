@@ -19,7 +19,14 @@
 
 namespace tool_mutrain\local\form;
 
-use tool_mutrain\external\form_autocomplete\framework_contextid;
+use tool_mulib\muform\element\autocomplete;
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\checkbox;
+use tool_mulib\muform\element\info;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
+use tool_mutrain\muform\autocomplete\framework_contextid;
 
 /**
  * Move credit framework.
@@ -28,38 +35,23 @@ use tool_mutrain\external\form_autocomplete\framework_contextid;
  * @copyright  2026 Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class framework_move extends \tool_mulib\local\ajax_form {
+final class framework_move extends form {
     #[\Override]
-    protected function definition() {
-        $mform = $this->_form;
-        $data = $this->_customdata['data'];
-        $context = $this->_customdata['context'];
+    protected function definition(): void {
+        $current = $this->get_current_data();
 
-        $mform->addElement('static', 'name', get_string('framework_name', 'tool_mutrain'), format_string($data->name));
-        $mform->addElement('static', 'idnumber', get_string('framework_idnumber', 'tool_mutrain'), s($data->idnumber));
+        $this->add(new info('name', get_string('framework_name', 'tool_mutrain')));
 
-        framework_contextid::add_element($mform, [], 'contextid', get_string('category'), $context);
+        $this->add(new info('idnumber', get_string('framework_idnumber', 'tool_mutrain'), null, info::PLAIN));
 
-        $mform->addElement('advcheckbox', 'restrictcontext', get_string('restrictcontext', 'tool_mutrain'), ' ');
+        $contextid = new autocomplete('contextid', get_string('category'), new framework_contextid((int)$current['contextid']));
+        $contextid->set_required(true);
+        $this->add($contextid);
 
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
+        $this->add(new checkbox('restrictcontext', get_string('restrictcontext', 'tool_mutrain')));
 
-        $this->add_action_buttons(true, get_string('framework_move', 'tool_mutrain'));
-
-        $this->set_data($data);
-    }
-
-    #[\Override]
-    public function validation($data, $files) {
-        $errors = parent::validation($data, $files);
-        $context = $this->_customdata['context'];
-
-        $error = framework_contextid::validate_value($data['contextid'], [], $context);
-        if ($error !== null) {
-            $errors['contextid'] = $error;
-        }
-
-        return $errors;
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('framework_move', 'tool_mutrain')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 }

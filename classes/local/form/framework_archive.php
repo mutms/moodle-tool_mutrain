@@ -19,6 +19,12 @@
 
 namespace tool_mutrain\local\form;
 
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\info;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
+
 /**
  * Archive training framework.
  *
@@ -26,26 +32,15 @@ namespace tool_mutrain\local\form;
  * @copyright  2025 Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class framework_archive extends \tool_mulib\local\ajax_form {
+final class framework_archive extends form {
     #[\Override]
-    protected function definition() {
-        $mform = $this->_form;
-        $data = $this->_customdata['data'];
+    protected function definition(): void {
+        $this->add(new info('name', get_string('framework_name', 'tool_mutrain')));
 
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
-        $mform->setDefault('id', $data->id);
+        $this->add(new info('idnumber', get_string('framework_idnumber', 'tool_mutrain'), null, info::PLAIN));
 
-        $mform->addElement('static', 'name', get_string('framework_name', 'tool_mutrain'), format_string($data->name));
-        $mform->addElement('static', 'idnumber', get_string('framework_idnumber', 'tool_mutrain'), s($data->idnumber));
-
-        $this->add_action_buttons(true, get_string('framework_archive', 'tool_mutrain'));
-    }
-
-    #[\Override]
-    public function validation($data, $files) {
-        $errors = parent::validation($data, $files);
-
-        return $errors;
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('framework_archive', 'tool_mutrain')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 }

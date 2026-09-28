@@ -19,6 +19,12 @@
 
 namespace tool_mutrain\local\form;
 
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\info;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
+
 /**
  * Remove field from training framework.
  *
@@ -28,31 +34,13 @@ namespace tool_mutrain\local\form;
  * @author     Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class field_remove extends \tool_mulib\local\ajax_form {
+final class field_remove extends form {
     #[\Override]
-    protected function definition() {
-        $mform = $this->_form;
-        $framework = $this->_customdata['framework'];
-        $field = $this->_customdata['field'];
+    protected function definition(): void {
+        $this->add(new info('fieldname', get_string('field', 'tool_mutrain'), $this->get_extra_data()['field']->name));
 
-        $mform->addElement('hidden', 'frameworkid');
-        $mform->setType('frameworkid', PARAM_INT);
-        $mform->setDefault('frameworkid', $framework->id);
-
-        $mform->addElement('hidden', 'fieldid');
-        $mform->setType('fieldid', PARAM_INT);
-        $mform->setDefault('fieldid', $field->id);
-
-        $name = format_string($field->name);
-        $mform->addElement('static', 'strfield', get_string('field', 'tool_mutrain'), $name);
-
-        $this->add_action_buttons(true, get_string('field_remove', 'tool_mutrain'));
-    }
-
-    #[\Override]
-    public function validation($data, $files) {
-        $errors = parent::validation($data, $files);
-
-        return $errors;
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('field_remove', 'tool_mutrain')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 }

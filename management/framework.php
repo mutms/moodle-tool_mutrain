@@ -64,7 +64,7 @@ $table->out($table->pagesize, false);
 if (!$framework->archived && has_capability('tool/mutrain:manageframeworks', $context)) {
     $url = new \core\url('/admin/tool/mutrain/management/field_add.php', ['frameworkid' => $framework->id]);
     $button = get_string('field_add', 'tool_mutrain');
-    $button = new \tool_mulib\output\ajax_form\button($url, $button);
+    $button = new \tool_mulib\output\muform\dialog\button($url, $button);
     $addbutton = $OUTPUT->render($button);
     echo '<br /><div class="buttons">' . $addbutton . '</div>';
 }

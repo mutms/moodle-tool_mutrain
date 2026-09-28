@@ -27,6 +27,7 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use tool_mulib\muform\handler;
 use tool_mutrain\local\framework;
 use tool_mutrain\local\management;
 
@@ -34,8 +35,6 @@ use tool_mutrain\local\management;
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
 /** @var stdClass $CFG */
-
-define('AJAX_SCRIPT', true);
 
 require('../../../../config.php');
 
@@ -48,27 +47,27 @@ require_capability('tool/mutrain:manageframeworks', $context);
 $currenturl = new core\url('/admin/tool/mutrain/management/framework_create.php', ['contextid' => $context->id]);
 $PAGE->set_context($context);
 $PAGE->set_url($currenturl);
+$title = get_string('framework_create', 'tool_mutrain');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
 
 $returnurl = new core\url('/admin/tool/mutrain/management/index.php', ['contextid' => $context->id]);
 
-$framework = new \stdClass();
-$framework->contextid = $context->id;
-$framework->name = '';
-$framework->idnumber = '';
-$framework->description = '';
-$framework->descriptionformat = FORMAT_HTML;
-$framework->restrictafter = null;
-$framework->restrictcontext = 0;
-$framework->publicaccess = 1; // Not visible until fields are added and users obtain credits.
+$current = [
+    'contextid' => $context->id,
+    'descriptionformat' => FORMAT_HTML,
+    'restrictcontext' => 0,
+    'publicaccess' => 1, // Not visible until fields are added and users obtain credits.
+];
+$handler = handler::from_request();
 
-$editoroptions = framework::get_description_editor_options();
-
-$form = new \tool_mutrain\local\form\framework_create(null, ['data' => $framework, 'editoroptions' => $editoroptions, 'context' => $context]);
+$form = new \tool_mutrain\local\form\framework_create($currenturl, $current);
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
-} else if ($data = $form->get_data()) {
+    $handler->cancelled($returnurl);
+}
+if ($data = $form->get_data()) {
     framework::create((array)$data);
-    $form->ajax_form_submitted($returnurl);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);
