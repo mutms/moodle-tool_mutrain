@@ -25,6 +25,12 @@ This plugin is required by the [Programs plugin](https://github.com/mutms/moodle
 
 See [online documentation](https://docs.mutms.org/mutrain/) for more information.
 
+## AI disclosure
+
+Parts of this plugin were written with the help of Claude (Anthropic). A human
+maintainer reviewed, corrected and accepted everything before it was committed.
+The design decisions and the final code are the maintainer's own.
+
 ---
 
 > This plugin is a fork of [Training value custom field by Open LMS](https://github.com/open-lms-open-source/moodle-customfield_training),
