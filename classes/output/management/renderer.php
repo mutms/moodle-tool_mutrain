@@ -19,7 +19,9 @@
 
 namespace tool_mutrain\output\management;
 
-use stdClass, core\url, html_writer;
+use stdClass;
+use core\url;
+use html_writer;
 
 /**
  * Frameworks management renderer.

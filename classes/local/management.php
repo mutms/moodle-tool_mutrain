@@ -20,7 +20,8 @@
 namespace tool_mutrain\local;
 
 use tool_mutrain\local\util;
-use core\url, stdClass;
+use core\url;
+use stdClass;
 
 /**
  * Training management helper.
