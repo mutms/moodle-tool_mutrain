@@ -19,17 +19,18 @@
 namespace tool_mutrain\phpunit\event;
 
 use tool_mutrain\local\framework;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Required credits reached event test.
  *
- * @group      MuTMS
  * @package    tool_mutrain
  * @copyright  2025 Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutrain\event\required_credits_unreached
  */
+#[CoversClass(\tool_mutrain\event\required_credits_unreached::class)]
+#[Group('MuTMS')]
 final class required_credits_unreached_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();

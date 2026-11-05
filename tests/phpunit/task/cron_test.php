@@ -19,18 +19,20 @@
 
 namespace tool_mutrain\phpunit\task;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Cron test.
  *
- * @group      MuTMS
  * @package    tool_mutrain
  * @copyright  2024 Open LMS (https://www.openlms.net/)
  * @copyright  2025 Petr Skoda
  * @author     Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutrain\task\cron
  */
+#[CoversClass(\tool_mutrain\task\cron::class)]
+#[Group('MuTMS')]
 final class cron_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();

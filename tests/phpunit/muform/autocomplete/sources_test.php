@@ -21,18 +21,19 @@ namespace tool_mutrain\phpunit\muform\autocomplete;
 use tool_mutrain\local\framework;
 use tool_mutrain\muform\autocomplete\field_add_fieldid;
 use tool_mutrain\muform\autocomplete\framework_contextid;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Training autocomplete source tests.
  *
- * @group       MuTMS
  * @package     tool_mutrain
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutrain\muform\autocomplete\field_add_fieldid
- * @covers \tool_mutrain\muform\autocomplete\framework_contextid
  */
+#[CoversClass(\tool_mutrain\muform\autocomplete\field_add_fieldid::class)]
+#[CoversClass(\tool_mutrain\muform\autocomplete\framework_contextid::class)]
+#[Group('MuTMS')]
 final class sources_test extends \advanced_testcase {
     #[\Override]
     public function setUp(): void {

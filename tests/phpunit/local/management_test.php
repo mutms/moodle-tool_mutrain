@@ -20,19 +20,20 @@
 namespace tool_mutrain\phpunit\local;
 
 use tool_mutrain\local\management;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Credit framework management helper test.
  *
- * @group      MuTMS
  * @package    tool_mutrain
  * @copyright  2024 Open LMS (https://www.openlms.net/)
  * @copyright  2025 Petr Skoda
  * @author     Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutrain\local\management
  */
+#[CoversClass(\tool_mutrain\local\management::class)]
+#[Group('MuTMS')]
 final class management_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();

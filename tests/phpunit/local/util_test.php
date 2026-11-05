@@ -22,17 +22,18 @@ namespace tool_mutrain\phpunit\local;
 
 use tool_mutrain\local\util;
 use tool_mulib\local\mulib;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Credit frameworks helper test.
  *
- * @group      MuTMS
  * @package    tool_mutrain
  * @copyright  2025 Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutrain\local\util
  */
+#[CoversClass(\tool_mutrain\local\util::class)]
+#[Group('MuTMS')]
 final class util_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();

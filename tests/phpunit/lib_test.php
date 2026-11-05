@@ -20,23 +20,24 @@
 
 namespace tool_mutrain\phpunit;
 
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Training credits lib.php tests.
  *
- * @group      MuTMS
  * @package    tool_mutrain
  * @copyright  2026 Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversFunction('tool_mutrain_pre_course_category_delete')]
+#[Group('MuTMS')]
 final class lib_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers \tool_mutrain_pre_course_category_delete()
-     */
     public function test_tool_mutrain_pre_course_category_delete(): void {
         global $DB;
 

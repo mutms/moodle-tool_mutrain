@@ -20,17 +20,18 @@
 namespace tool_mutrain\phpunit\local\area;
 
 use stdClass;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Program custom fields test.
  *
- * @group      MuTMS
  * @package    tool_mutrain
  * @copyright  2025 Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutrain\local\area\tool_muprog_program
  */
+#[CoversClass(\tool_mutrain\local\area\tool_muprog_program::class)]
+#[Group('MuTMS')]
 final class tool_muprog_program_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
