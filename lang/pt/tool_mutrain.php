@@ -85,4 +85,4 @@ $string['restrictafter'] = 'Apenas obtidos após';
 $string['restrictcontext'] = 'Restrito à categoria';
 $string['selectcategory'] = 'Selecionar categoria';
 $string['specificsettings'] = 'Configurações do campo personalizado de créditos de formação';
-$string['taskcron'] = 'Armazenamento em cache dos créditos concluídos';
+$string['taskcron'] = 'Recalcular créditos de formação';
