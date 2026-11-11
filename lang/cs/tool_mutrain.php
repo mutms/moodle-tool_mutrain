@@ -81,4 +81,4 @@ $string['restrictafter'] = 'Pouze získané po';
 $string['restrictcontext'] = 'Omezeno na kategorii';
 $string['selectcategory'] = 'Vybrat kategorii';
 $string['specificsettings'] = 'Nastavení vlastního pole kreditů za vzdělávání';
-$string['taskcron'] = 'Ukládání dokončených kreditů do mezipaměti';
+$string['taskcron'] = 'Přepočet kreditů za vzdělávání';
