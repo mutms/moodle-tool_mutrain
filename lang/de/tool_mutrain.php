@@ -85,4 +85,4 @@ $string['restrictafter'] = 'Nur erworben nach';
 $string['restrictcontext'] = 'Auf Kursbereich beschränkt';
 $string['selectcategory'] = 'Kursbereich auswählen';
 $string['specificsettings'] = 'Einstellungen für das nutzerdefinierte Feld Weiterbildungspunkte';
-$string['taskcron'] = 'Zwischenspeicherung erworbener Punkte';
+$string['taskcron'] = 'Weiterbildungspunkte neu berechnen';

@@ -85,4 +85,4 @@ $string['restrictafter'] = 'Solo ottenuti dopo';
 $string['restrictcontext'] = 'Limitato alla categoria';
 $string['selectcategory'] = 'Seleziona categoria';
 $string['specificsettings'] = 'Impostazioni del campo personalizzato per i crediti formativi';
-$string['taskcron'] = 'Memorizzazione in cache dei crediti completati';
+$string['taskcron'] = 'Ricalcolo dei crediti formativi';
