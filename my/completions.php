@@ -93,5 +93,6 @@ $report = \core_reportbuilder\system_report_factory::create(
 );
 echo $OUTPUT->render(new \tool_mulib\output\report_filter_bar($report));
 echo $report->output();
+echo $OUTPUT->render(new \tool_mulib\output\report_pager($report));
 
 echo $OUTPUT->footer();

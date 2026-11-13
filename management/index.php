@@ -81,7 +81,14 @@ $report = \core_reportbuilder\system_report_factory::create(
     \tool_mutrain\reportbuilder\local\systemreports\frameworks::class,
     $context
 );
-echo $OUTPUT->render(new \tool_mulib\output\report_filter_bar($report));
+echo $OUTPUT->render(new \tool_mulib\output\report_filter_bar($report, pinned: [
+    'framework:name' => null,
+    'framework:currentcontextonly' => null,
+    'framework:archived' => null,
+], defaults: [
+    'framework:archived' => ['operator' => \core_reportbuilder\local\filters\boolean_select::NOT_CHECKED],
+]));
 echo $report->output();
+echo $OUTPUT->render(new \tool_mulib\output\report_pager($report));
 
 echo $OUTPUT->footer();
