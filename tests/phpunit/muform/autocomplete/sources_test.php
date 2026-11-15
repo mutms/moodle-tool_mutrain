@@ -75,22 +75,25 @@ final class sources_test extends \advanced_testcase {
         $this->setUser($user1);
         $source = new field_add_fieldid((int)$framework1->id);
         $this->assertSame([(int)$framework1->id], $source->get_args());
-        $this->assertSame([$id(1) => $label(1), $id(2) => $label(2), $id(3) => $label(3)], $source->search('', 50));
-        $this->assertSame([$id(2) => $label(2)], $source->search('F2', 50));
-        $this->assertSame([$id(3) => $label(3)], $source->search('field3', 50));
-        $this->assertNull($source->search('', 2));
-        $this->assertSame($label(1), $source->label((string)$id(1)));
-        $this->assertNull($source->label((string)$id(4)));
-        $this->assertNull($source->label('-1'));
+        $this->assertSame([$id(1) => $label(1), $id(2) => $label(2), $id(3) => $label(3)], $source->search('', 50, []));
+        $this->assertSame([$id(2) => $label(2)], $source->search('F2', 50, []));
+        $this->assertSame([$id(3) => $label(3)], $source->search('field3', 50, []));
+        $this->assertNull($source->search('', 2, []));
+        $value = (string)$id(1);
+        $this->assertSame($label(1), $source->labels([$value])[$value] ?? null);
+        $value = (string)$id(4);
+        $this->assertNull($source->labels([$value])[$value] ?? null);
+        $this->assertNull($source->labels(['-1'])['-1'] ?? null);
 
         framework::field_add($framework2->id, $id(2));
         $source = new field_add_fieldid((int)$framework2->id);
-        $this->assertSame([$id(1) => $label(1), $id(3) => $label(3)], $source->search('', 50));
-        $this->assertNull($source->label((string)$id(2)));
+        $this->assertSame([$id(1) => $label(1), $id(3) => $label(3)], $source->search('', 50, []));
+        $value = (string)$id(2);
+        $this->assertNull($source->labels([$value])[$value] ?? null);
 
         $this->setUser($user2);
         $source = new field_add_fieldid((int)$framework2->id);
-        $this->assertSame([$id(1) => $label(1), $id(3) => $label(3)], $source->search('', 50));
+        $this->assertSame([$id(1) => $label(1), $id(3) => $label(3)], $source->search('', 50, []));
 
         $this->expectException(\required_capability_exception::class);
         new field_add_fieldid((int)$framework1->id);
@@ -109,13 +112,16 @@ final class sources_test extends \advanced_testcase {
         $this->setUser($user);
         $source = new framework_contextid($catcontext->id);
         $this->assertSame([$catcontext->id], $source->get_args());
-        $this->assertSame([$catcontext->id => 'Kategorie'], $source->search('', 50));
-        $this->assertSame('Kategorie', $source->label((string)$catcontext->id));
-        $this->assertNull($source->label((string)$syscontext->id));
+        $this->assertSame([$catcontext->id => 'Kategorie'], $source->search('', 50, []));
+        $value = (string)$catcontext->id;
+        $this->assertSame('Kategorie', $source->labels([$value])[$value] ?? null);
+        $value = (string)$syscontext->id;
+        $this->assertNull($source->labels([$value])[$value] ?? null);
 
         $this->setAdminUser();
         $source = new framework_contextid($syscontext->id);
-        $this->assertSame('System', $source->label((string)$syscontext->id));
+        $value = (string)$syscontext->id;
+        $this->assertSame('System', $source->labels([$value])[$value] ?? null);
 
         $this->setUser($this->getDataGenerator()->create_user());
         $this->expectException(\required_capability_exception::class);

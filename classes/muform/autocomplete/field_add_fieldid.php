@@ -52,7 +52,7 @@ final class field_add_fieldid extends \tool_mulib\muform\autocomplete\base {
     }
 
     #[\Override]
-    public function search(string $query, int $maxitems): ?array {
+    public function search(string $query, int $maxitems, array $exclude): ?array {
         $query = \core_text::strtolower(trim($query));
         $result = [];
         foreach ($this->get_candidates() as $field) {
@@ -71,7 +71,7 @@ final class field_add_fieldid extends \tool_mulib\muform\autocomplete\base {
     }
 
     #[\Override]
-    public function label(string $value): ?string {
+    protected function label_value(string $value): ?string {
         $candidates = $this->get_candidates();
         if (!isset($candidates[$value])) {
             return null;
