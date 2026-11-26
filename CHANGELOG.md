@@ -13,4 +13,6 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ### Changed
 
 - migration to new forms library
-- reports have an always visible filter bar, the standard filters form is available as Advanced filtering
+- credit frameworks, user credits and user completions use the Advanced report builder:
+  general search, filter chips, saved filters, configurable columns and filters; only frameworks the user may view
+  in their own category are listed

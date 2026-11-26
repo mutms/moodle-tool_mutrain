@@ -8,7 +8,8 @@
     "moodle/composer-installer": "*",
     "moodle/moodle": "5.3.*",
     "mutms/moodle-tool_mulib": "*",
-    "mutms/moodle-customfield_mutrain": "*"
+    "mutms/moodle-customfield_mutrain": "*",
+    "mutms/moodle-tool_mureport": "*"
   },
   "support": {
     "issues": "https://github.com/mutms/moodle-tool_mutrain/issues",

@@ -59,8 +59,6 @@ Feature: Managers can manage credit frameworks
       | contextid                       | Cat 1       |
       | restrictcontext                | 1           |
     And I click on "Add framework" "button" in the "dialog[open]" "css_element"
-    And the following should exist in the "reportbuilder-table" table:
-      | Framework name | Framework ID | Custom fields | Public | Required credits | Restricted to category |
     And I press "Add framework"
     And I set the following muform fields in the "dialog[open]" "css_element":
       | name                           | Framework 3 |
@@ -68,10 +66,10 @@ Feature: Managers can manage credit frameworks
       | contextid                       | System      |
       | restrictcontext                | 1           |
     And I click on "Add framework" "button" in the "dialog[open]" "css_element"
-    Then the following should exist in the "reportbuilder-table" table:
+    Then the following should exist in the mureport:
       | Framework name | Framework ID | Category | Custom fields | Public | Required credits | Restricted to category |
       | Framework 1    |              | System   | 0             | Yes    | 33               | No                     |
-      | Framework 2    | fwid2        | Cat 1    | 0             | No     | 13               | Cat 1                  |
+      | Framework 2    | fwid2        | Cat 1    | 0             | No     | 13               | Yes                    |
       | Framework 3    |              | System   | 0             | Yes    | 77               | No                     |
 
     When I follow "Framework 2"
@@ -149,7 +147,7 @@ Feature: Managers can manage credit frameworks
     And I click on "Delete framework" "button" in the "dialog[open]" "css_element"
     And I navigate to "Training credits > Credit frameworks" in site administration
     Then I should not see "Framework 2"
-    And the following should exist in the "reportbuilder-table" table:
+    And the following should exist in the mureport:
       | Framework name | Framework ID | Category | Custom fields | Public | Required credits | Restricted to category |
       | Framework 1    |              | System   | 0             | Yes    | 33               | No                     |
       | Framework 3    |              | System   | 0             | Yes    | 77               | No                     |
@@ -162,7 +160,7 @@ Feature: Managers can manage credit frameworks
       | name             | Framework 1 |
       | requiredcredits  | 33          |
     And I click on "Add framework" "button" in the "dialog[open]" "css_element"
-    And the following should exist in the "reportbuilder-table" table:
+    And the following should exist in the mureport:
       | Framework name | Framework ID | Category | Custom fields | Public | Required credits | Restricted to category |
       | Framework 1    |              | System   | 0             | Yes    | 33               | No                     |
     And I follow "Framework 1"
@@ -222,9 +220,9 @@ Feature: Managers can manage credit frameworks
       | Framework 004  | Cat 2    | training3 | 1               |
     And I log in as "manager1"
     And I navigate to "Training credits > Credit frameworks" in site administration
-    Then the following should exist in the "reportbuilder-table" table:
+    Then the following should exist in the mureport:
       | Framework name | Framework ID | Custom fields | Public | Required credits | Restricted to category | Category |
       | Framework 001  |              | 2             | Yes    | 100              | No                     | System   |
       | Framework 002  | fwid002      | 0             | Yes    | 77               | No                     | System   |
       | Framework 003  |              | 0             | No     | 99               | No                     | System   |
-      | Framework 004  |              | 1             | Yes    | 100              | Cat 2                  | Cat 2    |
+      | Framework 004  |              | 1             | Yes    | 100              | Yes                    | Cat 2    |

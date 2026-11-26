@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
+// phpcs:disable moodle.Files.RequireLogin.Missing
 
 /**
  * List of all credit frameworks.
@@ -37,26 +38,14 @@ require_once('../../../../config.php');
 
 $contextid = optional_param('contextid', 0, PARAM_INT);
 
-if ($contextid) {
-    $context = context::instance_by_id($contextid);
-} else {
-    $context = context_system::instance();
-}
-
-require_login();
-require_capability('tool/mutrain:viewframeworks', $context);
-
-if ($context->contextlevel == CONTEXT_SYSTEM) {
-    $category = null;
-} else if ($context->contextlevel == CONTEXT_COURSECAT) {
-    $category = $DB->get_record('course_categories', ['id' => $context->instanceid], '*', MUST_EXIST);
-} else {
-    throw new moodle_exception('invalidcontext');
-}
+$report = \tool_mutrain\mureport\system_report\frameworks::make_instance($contextid ?: context_system::instance()->id);
+$report->require_access();
+$context = $report->get_context();
 
 $currenturl = new core\url('/admin/tool/mutrain/management/index.php', ['contextid' => $context->id]);
 
 management::setup_index_page($currenturl, $context);
+$report->init_page($currenturl);
 
 $buttons = [];
 
@@ -77,18 +66,6 @@ if ($buttons) {
 
 echo $OUTPUT->header();
 
-$report = \core_reportbuilder\system_report_factory::create(
-    \tool_mutrain\reportbuilder\local\systemreports\frameworks::class,
-    $context
-);
-echo $OUTPUT->render(new \tool_mulib\output\report_filter_bar($report, pinned: [
-    'framework:name' => null,
-    'framework:currentcontextonly' => null,
-    'framework:archived' => null,
-], defaults: [
-    'framework:archived' => ['operator' => \core_reportbuilder\local\filters\boolean_select::NOT_CHECKED],
-]));
-echo $report->output();
-echo $OUTPUT->render(new \tool_mulib\output\report_pager($report));
+echo $OUTPUT->render(new \tool_mureport\output\report_full($report));
 
 echo $OUTPUT->footer();

@@ -69,19 +69,19 @@ Feature: Course completion awards credits
 
     When I am on the "student1" "user > profile" page
     And I follow "My credits"
-    Then I should see "No credits were obtained yet"
+    Then I should see "Nothing to display"
 
     When I am on "Course 1" course homepage
     And I follow "Sample page"
     And I am on the "tool_muprog > My programs" page
     And I am on the "student1" "user > profile" page
     And I follow "My credits"
-    Then the following should exist in the "reportbuilder-table" table:
+    Then the following should exist in the mureport:
       | Framework name | Restricted to category | Only obtained after | Required credits | Current credits |
-      | Framework 1    | No                     | Not set             | 5                | 4               |
+      | Framework 1    | No                     |                     | 5                | 4               |
 
     When I click on "4" "link" in the "Framework 1" "table_row"
-    Then the following should exist in the "reportbuilder-table" table:
+    Then the following should exist in the mureport:
       | Type              | Name     | Credits |
       | Course completion | Course 1 | 4       |
 
@@ -89,11 +89,11 @@ Feature: Course completion awards credits
 
     When I am on the "student1" "user > profile" page logged in as "viewer1"
     And I follow "Credits"
-    Then the following should exist in the "reportbuilder-table" table:
+    Then the following should exist in the mureport:
       | Framework name | Restricted to category | Only obtained after | Required credits | Current credits |
-      | Framework 1    | No                     | Not set             | 5                | 4               |
+      | Framework 1    | No                     |                     | 5                | 4               |
 
     When I click on "4" "link" in the "Framework 1" "table_row"
-    Then the following should exist in the "reportbuilder-table" table:
+    Then the following should exist in the mureport:
       | Type              | Name     | Credits |
       | Course completion | Course 1 | 4       |

@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
+// phpcs:disable moodle.Files.RequireLogin.Missing
 
 /**
  * Credits obtained by user in frameworks.
@@ -33,34 +34,27 @@ require('../../../../config.php');
 
 $userid = optional_param('userid', 0, PARAM_INT);
 
-require_login();
-if (isguestuser()) {
-    redirect(new core\url('/'));
-}
-
 $currenturl = new core\url('/admin/tool/mutrain/my/index.php');
-
 if ($userid) {
     $currenturl->param('userid', $userid);
 } else {
-    $userid = $USER->id;
+    require_login();
+    if (isguestuser()) {
+        redirect(new core\url('/'));
+    }
+    $userid = (int)$USER->id;
 }
-$PAGE->set_url($currenturl);
 
-$usercontext = context_user::instance($userid);
-$PAGE->set_context($usercontext);
+$report = \tool_mutrain\mureport\system_report\user_frameworks::make_instance($userid);
+$report->require_access();
+$report->init_page($currenturl);
+$user = $report->get_constraint_record('user', 'userid');
 
 if (!\tool_mulib\local\mulib::is_mutrain_active()) {
     redirect(new core\url('/'));
 }
 
-$user = $DB->get_record('user', ['id' => $userid, 'deleted' => 0], '*', MUST_EXIST);
-if (isguestuser($user)) {
-    redirect(new core\url('/'));
-}
-
 if ($userid != $USER->id) {
-    require_capability('tool/mutrain:viewusercredits', $usercontext);
     $title = get_string('credits', 'tool_mutrain');
 } else {
     $title = get_string('credits_my', 'tool_mutrain');
@@ -75,14 +69,6 @@ $PAGE->navbar->add($title);
 echo $OUTPUT->header();
 echo $OUTPUT->heading($title);
 
-$report = \core_reportbuilder\system_report_factory::create(
-    \tool_mutrain\reportbuilder\local\systemreports\frameworks_user::class,
-    $usercontext
-);
-echo $OUTPUT->render(new \tool_mulib\output\report_filter_bar($report, pinned: [
-    'framework:name' => null,
-]));
-echo $report->output();
-echo $OUTPUT->render(new \tool_mulib\output\report_pager($report));
+echo $OUTPUT->render(new \tool_mureport\output\report_full($report));
 
 echo $OUTPUT->footer();

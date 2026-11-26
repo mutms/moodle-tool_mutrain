@@ -18,6 +18,7 @@ Required plugins:
 
 * [Additional tools library plugin](https://github.com/mutms/moodle-tool_mulib)
 * [Training credits custom field plugin](https://github.com/mutms/moodle-customfield_mutrain)
+* [Advanced report builder plugin](https://github.com/mutms/moodle-tool_mureport)
 
 This plugin is required by the [Programs plugin](https://github.com/mutms/moodle-tool_muprog).
 

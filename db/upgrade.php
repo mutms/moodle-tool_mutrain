@@ -113,5 +113,20 @@ function xmldb_tool_mutrain_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2025121045, 'tool', 'mutrain');
     }
 
+    if ($oldversion < 2026112653) {
+        $classes = [
+            'tool_mutrain\\reportbuilder\\local\\systemreports\\frameworks',
+            'tool_mutrain\\reportbuilder\\local\\systemreports\\frameworks_user',
+            'tool_mutrain\\reportbuilder\\local\\systemreports\\completions_user',
+        ];
+        foreach ($classes as $classname) {
+            foreach (\core_reportbuilder\local\models\report::get_records(['source' => $classname]) as $report) {
+                $report->delete();
+            }
+        }
+
+        upgrade_plugin_savepoint(true, 2026112653, 'tool', 'mutrain');
+    }
+
     return true;
 }
