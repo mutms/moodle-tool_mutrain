@@ -95,7 +95,7 @@ final class user_frameworks extends system_report {
     protected function apply_constraints(): void {
         $this->add_constraint_restriction('userid', 'credit', 'userid');
         $usercontext = $this->get_context();
-        if ($usercontext->tenantid && \tool_mulib\local\mulib::is_mutenancy_active()) {
+        if (\tool_mulib\local\mulib::is_mutenancy_active() && $usercontext->tenantid) {
             $this->add_restriction(new sql(
                 "EXISTS (SELECT 'x'
                            FROM {context} fctx
