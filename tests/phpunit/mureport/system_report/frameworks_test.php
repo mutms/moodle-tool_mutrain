@@ -102,6 +102,7 @@ final class frameworks_test extends \advanced_testcase {
         $this->assertSame('Yes', $rows[0]['cells']['framework:publicaccess']);
         $this->assertSame('7.5', $rows[3]['cells']['framework:requiredcredits']);
         $this->assertSame('Gamma', strip_tags($rows[3]['cells']['framework:name']));
+        $this->assertSame([false, false, false, false, true], array_column($rows, 'muted'));
         $labels = \tool_mutrain\mureport\entity\framework::get_category_labels([(string)$catcontext1->id, (string)$syscontext->id]);
         $this->assertSame($category1->name, $labels[$catcontext1->id]);
         $this->assertSame('System', $labels[$syscontext->id]);

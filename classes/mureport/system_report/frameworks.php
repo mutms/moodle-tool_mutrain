@@ -63,6 +63,7 @@ final class frameworks extends system_report {
     #[\Override]
     protected function define(): void {
         $this->set_main_entity(new framework('framework'));
+        $this->set_row_muted('framework.archived = 1', ['framework']);
         $this->add_capability_restriction('framework', 'tool/mutrain:viewframeworks');
 
         $this->set_default_columns([
