@@ -80,6 +80,7 @@ final class frameworks extends system_report {
         $this->set_default_filters([
             'framework:name' => ['multisearch' => true],
             'framework:idnumber' => ['multisearch' => true],
+            'framework:id' => ['multisearch' => true],
             'framework:category',
             'framework:publicaccess',
             'framework:archived',

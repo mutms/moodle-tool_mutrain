@@ -61,8 +61,8 @@ class framework extends entity {
     #[\Override]
     public function get_column_names(): array {
         return [
-            'name', 'idnumber', 'category', 'publicaccess', 'fieldcount', 'requiredcredits', 'restrictcontext', 'restrictafter',
-            'archived', 'timecreated',
+            'name', 'idnumber', 'id', 'category', 'publicaccess', 'fieldcount', 'requiredcredits', 'restrictcontext',
+            'restrictafter', 'archived', 'timecreated',
         ];
     }
 
@@ -70,6 +70,7 @@ class framework extends entity {
     protected function define_columns(string $selector): array {
         $alias = $this->alias;
         $column = match ($selector) {
+            'id' => $this->create_id_column(),
             'name' => $this->define_name_column(),
             'idnumber' => $this->create_column('idnumber', new lang_string('framework_idnumber', 'tool_mutrain'), column::TYPE_TEXT)
                 ->add_field('idnumber', "$alias.idnumber")
@@ -115,13 +116,16 @@ class framework extends entity {
 
     #[\Override]
     public function get_filter_names(): array {
-        return ['name', 'idnumber', 'category', 'publicaccess', 'requiredcredits', 'restrictcontext', 'restrictafter', 'archived'];
+        return [
+            'name', 'idnumber', 'id', 'category', 'publicaccess', 'requiredcredits', 'restrictcontext', 'restrictafter', 'archived',
+        ];
     }
 
     #[\Override]
     protected function define_filters(string $selector): array {
         $alias = $this->alias;
         $filter = match ($selector) {
+            'id' => $this->create_id_filter(),
             'name' => new filter\text($alias, 'name', new lang_string('framework_name', 'tool_mutrain'), "$alias.name"),
             'idnumber' => new filter\text(
                 $alias,
